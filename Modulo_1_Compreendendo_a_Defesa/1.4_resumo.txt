@@ -1,0 +1,50 @@
+1. Defesa em Profundidade:
+
+	Conceitos-Chave:
+		- Identificação de Ativos:
+			.Classificação em 4 etapas: categorização, responsabilização, critérios (confidencialidade, valor) e esquema de classificação.
+			.Ciclo de vida: aquisição → implantação → utilização → manutenção → descarte.
+		- Proteção Multinível:
+			.Analogias: Cebola (camadas sobrepostas) e Alcachofra (folhas independentes).
+			.Estratégias: sobreposição, limitação, diversidade, ofuscação e simplicidade.
+	
+	Aplicação Prática:
+		- Exemplo: Empresa usa VLANs para segmentar redes (diversidade) e oculta versões de SO (ofuscação).
+
+2. Gerenciamento de Operações de Segurança:
+
+	Ferramentas e Processos:
+		- Gerenciamento de Configuração:
+			.Documentação: mapas de rede, esquemas IP, padrões de nomenclatura.
+			.Reforço de sistemas: políticas de contas, logs de auditoria.
+		- Gerenciamento de Logs:
+			.Fluxo: geração → transmissão → armazenamento → análise → descarte.
+			.Exemplos: logs de autenticação (SO) e detecção de malware (aplicativos).
+		- Analisadores de Pacotes:
+			.Funções: detectar intrusões (ex.: tráfego anômalo) e isolar sistemas comprometidos.
+
+	Caso Real:
+		- "SIEM correlaciona logs de firewall e antivírus para identificar ataques de phishing."
+
+3. Políticas e Conformidade:
+
+	Diretrizes Organizacionais:
+		- Políticas de Negócios:
+			.Tipos: corporativas (código de conduta), RH (benefícios) e segurança (AUP).
+		- BYOD:
+			.Práticas: MDM, senhas fortes, apagamento remoto ("Find My Device").
+			.Riscos mitigados: vazamento de dados por dispositivos pessoais.
+		- Regulamentações:
+			.LGPD/GDPR (dados pessoais), HIPAA (saúde).
+
+	Exemplo de Implementação:
+		- "Política de AUP atualizada em 2024 para incluir restrições a IAs generativas, com treinamento obrigatório."
+
+Lições Aprendidas: 
+
+	- Hierarquia de Proteção:
+		.Ativos → Vulnerabilidades → Ameaças → Defesa em profundidade.
+	- Operações Contínuas:
+		.Configurações padronizadas + monitoramento de logs = detecção proativa.
+	- Governança:
+		.Políticas claras (BYOD, AUP) + conformidade regulatória = redução de riscos legais.
