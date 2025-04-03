@@ -1,0 +1,69 @@
+2.3.1 Avatar (Contexto):
+
+	- As vulnerabilidades em redes expõem empresas e clientes a ataques. O fortalecimento da segurança de redes envolve a proteção de serviços e protocolos para reduzir riscos.
+
+2.3.2 Serviços de Rede e Roteamento:
+
+	- Criminosos exploram serviços de rede vulneráveis para ataques. Ferramentas como scanners de portas identificam portas abertas (úteis para administradores, mas também para invasores).
+	- Medidas de proteção:
+		.Expor apenas portas necessárias.
+		.Usar firewalls e monitoramento.
+	- Protocolos e Suas Vulnerabilidades:
+		.DHCP (Dynamic Host Configuration Protocol)
+			Atribui IPs automaticamente.
+			Ataques: Invasores podem negar acesso com servidores DHCP falsos.
+			Proteção: Proteção física do servidor. Firewalls, patches, monitoramento de logs. Desativar serviços não utilizados.
+		.DNS (Domain Name System)
+			Converte URLs em IPs.
+			Ataques: Redirecionamento para sites falsos (DNS spoofing).
+			Proteção: DNSSEC (assinaturas digitais para autenticação). Separar servidores DNS internos/externos. Restringir transferências de zona.
+		.ICMP (Internet Control Message Protocol)
+			Usado para testes (ex: ping).
+			Ataques: DoS ou reconhecimento de rede.
+			Proteção: Filtrar solicitações ICMP.
+		.RIP (Routing Information Protocol)
+			Protocolo de roteamento com limite de 15 saltos.
+			Ataques: Redirecionamento de tráfego.
+			Proteção: Autenticação e atualizações.
+		.NTP (Network Time Protocol)
+			Sincroniza horários em redes.
+			Ataques: Comprometimento de certificados digitais.
+			Proteção: Autenticação NTP.
+
+2.3.3 Telnet, SSH e SCP:
+
+	- Telnet:
+		.Texto não criptografado (inseguro).
+		.Porta 23.
+		.Risco: Credenciais capturadas (ex: via Wireshark).
+	- SSH (Secure Shell):
+		.Criptografado (seguro).
+		.Porta 22.
+		.Substitui o Telnet para gerenciamento remoto.
+	- SCP (Secure Copy):
+		.Transferência segura de arquivos via SSH.
+
+2.3.4 Protocolos Seguros:
+
+	- SNMP (Simple Network Management Protocol)
+		.Monitora dispositivos de rede.
+		.Versão segura: SNMPv3 (com criptografia).
+	- HTTP vs HTTPS
+		.HTTP (porta 80): Inseguro (dados trafegam em claro).
+		.HTTPS (SSL/TLS): Criptografado (confidencialidade).
+	- FTP vs FTPS
+		.FTP (porta 21): Sem criptografia.
+		.FTPS: Adiciona SSL/TLS para segurança.
+	- E-mail (POP3/IMAP)
+		.POP3 (porta 110) e IMAP (porta 143): Podem usar SSL/TLS.
+		.S/MIME: Criptografia e assinatura digital para e-mails.
+
+Checklists de Segurança:
+	
+	- Geral:
+		.Atualizar softwares e patches.
+		.Fechar portas não utilizadas.
+		.Usar autenticação forte (ex: DNSSEC, SNMPv3).
+	- Específico:
+		.Para DHCP: Monitorar logs, usar firewall.
+		.Para DNS: Implementar DNSSEC, separar servidores.

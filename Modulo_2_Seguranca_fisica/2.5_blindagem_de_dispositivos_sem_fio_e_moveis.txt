@@ -1,0 +1,61 @@
+2.5.1 – Introdução: 
+
+	- Redes sem fio incluem diversos dispositivos (celulares, roteadores, câmeras IP, etc.).
+	- É essencial proteger esses dispositivos contra ameaças digitais.
+
+2.5.2 – Segurança de Dispositivos Sem Fio:
+
+	- WEP (Wired Equivalent Privacy): Primeiro protocolo de segurança sem fio, mas vulnerável.
+	- WPA (Wi-Fi Protected Access): Substituiu o WEP, com melhorias como:
+		.WPA-PSK (Pre-Shared Key): Usa chaves de 256 bits (mais seguras que WEP).
+		.TKIP (Temporal Key Integrity Protocol): Melhor gerenciamento de chaves.
+		.AES (Advanced Encryption Standard): Substituiu o TKIP, mais robusto.
+	- WPA2 (2006): Tornou o AES obrigatório e introduziu o CCMP.
+	- WPA3: Aprimorou a troca de chaves e manteve algoritmos criptográficos fortes.
+	- WPS (Wi-Fi Protected Setup): Facilita a conexão, mas é vulnerável a ataques de força bruta (deve ser desativado).
+
+2.5.3 – Autenticação em Redes Sem Fio:
+
+	- Autenticação de Sistema Aberto: Qualquer dispositivo pode se conectar (sem segurança).
+	- Autenticação de Chave Compartilhada: Usa criptografia para proteger a conexão.
+
+2.5.4 – Protocolos de Autenticação (EAP):
+
+	- EAP (Extensible Authentication Protocol): Estrutura para autenticação em redes sem fio.
+		.EAP-TLS: Alta segurança (exige certificados cliente/servidor).
+		.PEAP: Segurança média (só exige certificado do servidor).
+		.EAP-TTLS: Segurança média (só exige certificado do servidor).
+		.EAP-FAST: Segurança média (não exige certificados).
+
+2.5.5 – Autenticação Mútua e Ataques:
+
+	- Access Points Não Autorizados: Dispositivos que imitam redes legítimas para roubar dados.
+	- Ataques Man-in-the-Middle (MitM): Interceptação de dados entre cliente e AP.
+	- Solução: Autenticação mútua (cliente e servidor se autenticam).
+
+2.5.6 – Métodos de Comunicação em Dispositivos Móveis:
+	
+	- Wi-Fi e Bluetooth: Conexões sem fio (Wi-Fi para internet, Bluetooth para periféricos).
+	- NFC (Near-Field Communication): Pagamentos sem contato (ex.: Apple Pay, Google Pay).
+	- Infravermelho (IR): Controle remoto (ex.: usar celular como controle de TV).
+	- USB: Conexão física para transferência de dados ou modem.
+
+2.5.7 – Gerenciamento de Dispositivos Móveis:
+
+	- BYOD (Bring Your Own Device): Políticas para dispositivos pessoais usados no trabalho.
+	- COPE (Corporate-Owned, Personally Enabled): Dispositivos corporativos com uso pessoal.
+	- Segmentação e Conteinerização: Separa dados pessoais e corporativos.
+	- Gerenciamento de Aplicativos: Lista de permissões e autenticação forte.
+
+2.5.8 – Proteções para Dispositivos Móveis:
+
+	- Riscos: Roubo, perda, jailbreak/root (bypass de restrições), sideloading (apps não verificados).
+	- Proteções:
+		.Bloqueio de tela (senha, PIN, biometria).
+		.Criptografia completa do dispositivo.
+		.Limpeza remota em caso de perda/roubo.
+
+2.5.9 – Rastreamento por GPS:
+
+	- Usado para geolocalização em tempo real (~5m de precisão).
+	- Riscos: Apps maliciosos podem rastrear usuários ou enviar notificações push falsas.

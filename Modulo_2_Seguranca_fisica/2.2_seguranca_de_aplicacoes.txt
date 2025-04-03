@@ -1,0 +1,58 @@
+2.2.1 Introdução à Segurança de Aplicativos:
+
+	- A proteção de aplicativos, sites e serviços online é crucial para a segurança da empresa.
+	- A segurança deve ser priorizada em todas as etapas: desenvolvimento, teste e implantação.
+
+2.2.2 Desenvolvimento de Aplicativos:
+
+	- Um processo robusto inclui:
+		.Desenvolvimento e Teste
+			Ambiente de desenvolvimento menos restritivo para codificação e depuração.
+			Uso de controle de versão (ex: Git) e sandboxes para isolar códigos.
+			Testes de qualidade (QA) para identificar falhas antes da produção.
+		.Preparo (Staging) e Produção
+			Ambiente de staging deve replicar o ambiente de produção para validar segurança e funcionalidade.
+			Após testes, o software é implantado em produção.
+		.Provisionamento e Desprovisionamento
+			Automatização via portais de autoatendimento para gerenciar a criação/remoção de software.
+
+2.2.3 Técnicas de Codificação Segura:
+
+	- Normalização: Organiza dados em bancos de dados para evitar redundâncias e inconsistências.
+	- Procedimentos Armazenados: Instruções SQL pré-compiladas para reduzir tráfego de rede e evitar injeção SQL.
+	- Ofuscação e Camuflagem: Oculta dados sensíveis ou lógica do código para dificultar engenharia reversa.
+	- Reutilização de Código: Economiza tempo, mas exige cuidado para não herdar vulnerabilidades.
+	- SDKs e Bibliotecas de Terceiros: Agilizam o desenvolvimento, mas podem introduzir riscos se não forem atualizados.
+
+2.2.4 Validação de Entrada:
+
+	- Ataques comuns exploram entradas malformadas (ex: injeção SQL, modificação de URLs).
+	- Exemplo: Um invasor altera parâmetros em links de confirmação de e-mail para manipular dados no banco.
+
+2.2.5 Regras de Validação:
+
+	- Critérios para garantir dados íntegros e precisos:
+		.Tamanho (nº de caracteres), Formato (ex: e-mail válido), Consistência (dados relacionados), Intervalo (valores mín/máx), Dígito de Verificação (cálculos para detectar erros).
+
+2.2.6 Verificações de Integridade:
+
+	- Checksum: Compara valores hash antes/depois da transmissão para detectar alterações.
+	- Funções Hash: Algoritmos como MD5, SHA-1, SHA-256 geram "impressões digitais" de dados.
+	- Controle de Versão: Evita conflitos em edições simultâneas (ex: Git).
+	- Backups: Garantem recuperação em caso de corrupção.
+	- Autorização: Define permissões de acesso (ex: arquivos somente leitura).
+
+2.2.7 Outras Práticas de Segurança:
+
+	- Assinatura de Código: Certifica a autenticidade e integridade do software.
+	- Cookies Seguros: Criptografam dados armazenados em cookies para evitar roubo.
+
+2.2.8 Controle de Ameaças:
+
+	- Medidas para mitigar riscos:
+		.Acesso não autorizado: Autenticação multifatorial e monitoramento de logs.
+		.Vulnerabilidades de SO/SW: Atualizações e patches regulares.
+		.Perda de Dados: Backups e classificação de dados.
+		.Tempo de Inatividade: Planos de continuidade e recuperação de desastres (BCP/DRP).
+			BCP (Business Continuity Plan | Plano de Continuidade de Negócios)
+			DRP (Disaster Recovery Plan | Plano de Recuperação de Desastres)

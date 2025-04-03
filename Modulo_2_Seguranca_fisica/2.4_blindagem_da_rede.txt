@@ -1,0 +1,51 @@
+2.4.1 Segmentação de Rede:
+
+	- A segmentação divide uma rede em partes menores para melhorar desempenho e segurança. 
+
+2.4.2 VLANs (Redes Locais Virtuais):
+
+	- O que é uma VLAN?
+		.Agrupa dispositivos logicamente (não fisicamente) em uma mesma rede, mesmo que conectados a switches diferentes.
+		.Exemplo: Criar VLANs separadas para cada andar de um prédio ou para departamentos (RH, Financeiro, TI).
+	- Como funciona?
+		.Agrupamento Lógico:
+			Portas de um switch são atribuídas a VLANs específicas (ex: Portas 1-10 = VLAN do RH).
+			Trunks (Troncos): Conexões entre switches que carregam tráfego de múltiplas VLANs.
+	.Benefícios de Segurança:
+			Isola dados sensíveis (ex: VLAN do RH não "vê" tráfego de outras VLANs).
+			Reduz ataques de broadcast (como negação de serviço).
+	.Proteção da VLAN:
+			Monitorar desempenho.
+			Usar configurações avançadas (ex: filtros de tráfego).
+			Aplicar patches regularmente.
+
+2.4.3 DMZ (Zona Desmilitarizada):
+
+	- O que é uma DMZ?
+		.Rede intermediária entre a Internet (não confiável) e a rede interna (confiável).
+		.Objetivo: Hospedar serviços acessíveis ao público (ex: servidores web, e-mail) sem expor a rede interna.
+	- Como Funciona?
+		.Acesso Controlado:
+			Servidores na DMZ são acessíveis da Internet, mas firewalls bloqueiam acessos não autorizados à rede interna.
+		.Zonas de Risco:
+			Internet: Risco alto, confiança baixa.
+			DMZ: Risco médio-alto, confiança médio-baixa.
+			Extranet (parceiros): Risco médio-baixo, confiança médio-alta.
+			Rede Interna (LAN): Risco baixo, confiança alta.
+		.Modelo Zero Trust:
+			Nenhum usuário/dispositivo é confiável por padrão, mesmo dentro da rede.
+			Monitoramento contínuo de atividades.
+			Acesso restrito por políticas rígidas (ex: autenticação multifatorial).
+
+	- Resumo das Técnicas:
+
+		Técnica:	Função Principal:			Exemplo de Uso:
+		VLAN		Isolar grupos logicamente		Separar RH, TI e Financeiro.
+		DMZ		Proteger serviços expostos à Internet	Hospedar site público com segurança.
+		Zero Trust	Eliminar confiança implícita		Exigir autenticação para cada acesso interno.
+
+	- Por que usar?
+		.VLANs: Evitar que um ataque no setor de TI afete o RH.
+		.DMZ: Impedir que hackers acessem a rede interna após invadir o servidor web.
+		.Zero Trust: Mitigar riscos de usuários internos maliciosos ou comprometidos.
+		.(Essas estratégias são complementares e amplamente usadas em redes corporativas modernas.)

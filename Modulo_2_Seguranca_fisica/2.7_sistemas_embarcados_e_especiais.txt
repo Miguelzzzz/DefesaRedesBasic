@@ -1,0 +1,71 @@
+2.7.1 – Introdução:
+
+	- A segurança de infraestruturas críticas (energia, transporte, comunicações, saúde) é vital para a estabilidade econômica e social. Ataques cibernéticos podem causar:
+		.Interrupção de serviços essenciais (ex.: apagões, falhas em redes de transporte).
+		.Perda de dados sensíveis (ex.: dados industriais, registros médicos).
+	- Exemplo emblemático: O Stuxnet (2010), um malware que atacou sistemas SCADA em usinas nucleares, mostrou como ataques podem sabotar processos industriais.
+
+2.7.2 – Ameaças a Sistemas SCADA/ICS:
+
+	- Riscos
+		.Sistemas SCADA/ICS (Supervisory Control and Data Acquisition / Industrial Control Systems) foram projetados sem segurança cibernética.
+		.A conexão à Internet (para monitoramento remoto) expõe esses sistemas a invasões.
+	- Proteções
+		.Segregação de redes:
+			Isolar a rede SCADA da rede corporativa e da Internet.
+		.Monitoramento contínuo:
+			Detectar anomalias com IDS/IPS (Sistemas de Detecção/Prevenção de Intrusões).
+		.Atualizações e patches:
+			Manuir sistemas com versões seguras (quando possível).
+
+2.7.3 – Internet das Coisas (IoT):
+
+	- Desafios de Segurança
+		.Superfície de ataque ampliada: Bilhões de dispositivos conectados (câmeras, sensores, veículos).
+		.Vulnerabilidades comuns:
+			Credenciais padrão (ex.: admin/admin).
+			Firmware desatualizado.
+			Falta de criptografia.
+	- Boas Práticas
+		.✅ Alterar senhas padrão
+		.✅ Isolar dispositivos IoT em VLANs separadas
+		.✅ Usar soluções de segurança específicas para IoT (ex.: scanners como Shodan para identificar dispositivos expostos).
+
+2.7.4 – Sistemas Embarcados (Embedded Systems):
+
+	- Ameaças
+		.Ataques de temporização (Timing Attacks): Exploram variações no tempo de resposta para extrair dados.
+		.Dispositivos médicos: Marca-passos e bombas de insulina podem ser hackeados remotamente.
+		.Veículos automotivos: Sistemas de frenagem e navegação são alvos.
+	- Proteções
+		.System-on-Chip (SoC): Dispositivos como Raspberry Pi e Arduino permitem atualizações em campo.
+		.Criptografia de comunicações (ex.: entre sensores e controladores).
+
+2.7.5 – VoIP (Voz sobre IP):
+
+	- Riscos
+		.Espionagem: Chamadas podem ser interceptadas.
+		.Fraude: Uso não autorizado de linhas VoIP.
+		.Ataques DDoS: Sobrecarregar servidores de VoIP.
+	- Proteções
+		.🔹 Criptografia (SRTP, TLS) para chamadas.
+		.🔹 Autenticação forte (ex.: 2FA).
+		.🔹 Firewalls compatíveis com VoIP.
+
+2.7.6 – Tecnologias de Enganação (Honeypots e Sinkholes):
+
+	- Honeypot
+		.Sistema falso que imita servidores reais para atrair hackers.
+		.Objetivo: Coletar táticas de ataque e alertar sobre ameaças.
+	- DNS Sinkhole
+		.Bloqueia acesso a domínios maliciosos, redirecionando tráfego para um servidor controlado.
+		.Uso comum: Combate a botnets (ex.: malware que busca C&C servers).
+
+2.7.7 – Resumo de Ações Recomendadas:
+
+	Tecnologia:		Ameaças:					Proteções:
+	SCADA/ICS		Sabotagem industrial				Isolar redes, monitorar tráfego
+	IoT			Dispositivos comprometidos			Segmentar redes, atualizar firmware
+	Sistemas Embarcados	Ataques a dispositivos médicos/veículos		Usar SoC, criptografar dados
+	VoIP			Espionagem, fraudes				Criptografia, autenticação forte
+	Honeypots		Coleta de inteligência				Implementar sistemas de isca para análise

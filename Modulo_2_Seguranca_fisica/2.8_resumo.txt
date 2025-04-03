@@ -1,0 +1,76 @@
+1. Segurança Física:
+
+	- Barreiras físicas: Cercas, biometria (impressão digital, íris, reconhecimento facial) e crachás de acesso.
+	- Monitoramento: Uso de guardas de segurança, vigilância por vídeo e tags RFID para rastreamento de ativos.
+	- CER (Taxa de Erro de Crossover): Métrica para avaliar a precisão de sistemas biométricos.
+
+2. Segurança de Aplicações:
+
+	- Ciclo de vida seguro: Desenvolvimento, teste, produção e desativação seguros.
+	- Técnicas de codificação: Normalização, procedimentos armazenados, ofuscação e validação de dados.
+	- Proteção de dados: Assinatura de código, cookies seguros, MFA (Autenticação Multifatorial) e políticas de backup.
+	- Controles: Monitoramento de logs, classificação de dados e testes de software antes do lançamento.
+
+3. Hardening de Rede (Serviços e Protocolos):
+
+	- Proteção de serviços: Fechar portas desnecessárias, usar scanners de portas.
+	- Protocolos seguros:
+		.DHCP: Validação para evitar servidores maliciosos.
+		.DNSSEC: Assinaturas digitais para proteger o DNS.
+		.ICMP: Filtragem para evitar ataques de reconhecimento e DoS.
+		.RIP/NTP: Autenticação para evitar ataques a roteadores e servidores de tempo.
+		.SSH (porta 22): Substitui o Telnet (porta 23) para gerenciamento seguro.
+		.SNMPv3: Criptografia para monitoramento seguro de rede.
+		.HTTP/HTTPS: Usar TLS/SSL para tráfego web seguro.
+
+4. Segmentação de Rede:
+
+	- VLANs: Isolamento lógico de dispositivos para reduzir riscos.
+	- DMZ (Zona Desmilitarizada): Separa redes internas da Internet (ex.: servidores web/mail).
+	- Modelo Zero Trust: Monitoramento contínuo de usuários e dispositivos, sem confiança implícita.
+
+5. Segurança de Dispositivos Sem Fio e Móveis:
+
+	- Evolução de protocolos: WEP → WPA → WPA2/WPA3.
+	- Autenticação: EAP (EAP-TLS, PEAP, EAP-TTLS, EAP-FAST) e autenticação mútua.
+	- Proteção contra APs não autorizados: Detecção e bloqueio de pontos de acesso falsos.
+	- IoT: Riscos de dispositivos conectados (senhas padrão, firmware desatualizado) e proteção com VLANs e scanners (ex.: Shodan).
+	- Mobile: Containerização (separação dados pessoais/corporativos), bloqueio por biometria e criptografia.
+
+6. Resiliência e Alta Disponibilidade:
+
+	- Princípios:
+		.Eliminar pontos únicos de falha (SPOFs).
+		.Redundância (N+1, RAID, clusters).
+		.Detecção rápida de falhas (monitoramento).
+	- Cinco Noves (99,999% disponibilidade): <5.26 minutos de downtime/ano.
+	- Técnicas:
+		.RAID: Espelhamento (RAID 1) e paridade (RAID 5/6) para tolerância a falhas.
+		.STP (Spanning Tree): Evita loops em redes com switches redundantes.
+		.Redundância de roteador: HSRP/VRRP para failover automático.
+		.Replicação de dados: Síncrona (tempo real) ou assíncrona (quase em tempo real).
+	- Backups: Armazenamento externo, validação e criptografia.
+
+7. Infraestrutura Crítica:
+
+	- Energia: UPS, geradores e fontes redundantes.
+	- HVAC: Controle de temperatura/umidade para hardware (ex.: data centers).
+	- Ataques a SCADA/ICS: Isolar redes industriais da TI corporativa (ex.: Stuxnet).
+
+8. Sistemas Embarcados e IoT:
+
+	- Riscos: Ataques de timing, dispositivos médicos hackeáveis, veículos conectados.
+	- Proteção:
+		.SoC (System-on-Chip): Dispositivos como Raspberry Pi com atualizações em campo.
+		.Criptografia: Comunicação entre sensores/controladores.
+		.Drones: Vulneráveis a spoofing GPS/Wi-Fi; exigem firewalls e autenticação forte.
+
+9. VoIP (Voz sobre IP):
+
+	- Ameaças: Espionagem, fraudes, DDoS.
+	- Proteção: Criptografia (SRTP/TLS), autenticação forte e firewalls compatíveis.
+
+10. Técnicas de Enganação:
+
+	- Honeypots/Honeynets: Sistemas falsos para atrair e estudar invasores.
+	- DNS Sinkhole: Bloqueia acesso a domínios maliciosos.

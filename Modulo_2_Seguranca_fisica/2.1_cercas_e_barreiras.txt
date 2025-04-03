@@ -1,0 +1,57 @@
+2.1.1 Cercas e Barreiras Físicas:
+
+	- Função: Primeira linha de defesa, visível e dissuasiva.
+
+	- Componentes Principais:
+		.Cercas de perímetro:
+			Altura e eficácia:
+
+			Altura:			Proteção Oferecida:
+			1 metro (3-4 pés)	Deter invasores casuais.
+			2 metros (6-7 pés)	Impede escalada casual.
+			2,5 metros (8 pés)	Atraso limitado para invasores determinados.
+
+			Proteções superiores: Arame farpado ou lâminas para aumentar a segurança.
+		.Outros elementos: Portões de segurança, cabeços de amarração (anti-veículos), abrigos de proteção.
+
+	- Boas Práticas:
+		.Inspeções regulares para evitar túneis ou erosão.
+		.Evitar estacionar veículos próximos à cerca (facilita escalada).
+		.Cumprir regulamentações locais sobre tipos de cercas permitidas.
+	- Exemplo Prático: "Empresas de alto risco instalam cercas de 3 metros com arame farpado e sensores de vibração para detectar tentativas de invasão."
+
+2.1.2 Biometria:
+	
+	- Tecnologias Utilizadas:
+		.Fisiológicas: Impressão digital, reconhecimento facial, íris, geometria da mão.
+		.Comportamentais: Reconhecimento de voz, padrão de digitação.
+	- Vantagens:
+		.Alta segurança: Dificulta falsificação (vs. senhas ou cartões).
+		.Aplicações: Desbloqueio de dispositivos, acesso a áreas restritas, transações bancárias.
+	- Desafios:
+		.Falsos positivos/negativos (Erros Tipo I e II).
+		.Custo de implementação e manutenção.
+	- Caso Real: "Sistemas biométricos em data centers reduziram acessos não autorizados em 60%."
+
+2.1.3 Logs de Acesso e Crachás para exemplo:
+
+	- Fluxo do Sistema de Crachás:
+		1.Passagem do crachá no leitor.
+		2.Leitura do número armazenado no crachá.
+		3.Envio para computador de controle.
+		4.Decisão de acesso (com base em credenciais).
+		5.Registro da transação para auditoria.
+	- Importância dos Logs:
+		.Rastreamento de movimentos em áreas sensíveis.
+		.Investigação de incidentes (ex.: acesso não autorizado).
+	- Dica: "Integre crachás com sistemas biométricos para autenticação multifator (ex.: crachá + reconhecimento facial)."
+
+2.1.4 Vigilância:
+
+	- Sistemas Complementares:
+		.Dissuasão: Câmeras visíveis, iluminação intensa.
+		.Detecção: Sensores de movimento, alarmes sonoros.
+		.Resposta: Guardas treinados para intervir rapidamente.
+	- Exemplo Prático:
+		.Recepção: Câmeras 360° + botões de pânico sob o balcão.
+		.Áreas críticas: Sensores térmicos para detectar intrusões fora do horário.
