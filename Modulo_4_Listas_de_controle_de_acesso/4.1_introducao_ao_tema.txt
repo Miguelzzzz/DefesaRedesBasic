@@ -1,0 +1,69 @@
+4.1.1. O que é uma ACL?:
+
+	- Uma ACL (Access Control List) é uma lista sequencial de regras (ACE - Access Control Entries) usadas para filtrar tráfego de rede com base em informações do cabeçalho do pacote (endereços IP, portas TCP/UDP, protocolos).
+	- Funções Principais:
+		.✅ Filtrar tráfego indesejado (ex.: bloquear vídeo ou Telnet).
+		.✅ Melhorar desempenho (reduzir tráfego desnecessário).
+		.✅ Controlar acesso (ex.: restringir acesso a redes sensíveis como RH).
+		.✅ Priorizar tráfego (QoS para VoIP).
+
+4.1.2. Tipos de ACLs:
+
+	- Padrão vs. Estendida:
+
+	Tipo:		Camada:					Critérios de Filtro:			Exemplo de Uso:
+	Padrão		Camada 3 (Rede)				Apenas IP de origem.			access-list 10 permit 192.168.1.0 0.0.0.255
+	Estendida	Camadas 3 e 4 (Rede + Transporte)	IP de origem/destino + portas TCP/UDP.	access-list 100 permit tcp 192.168.1.0 0.0.0.255 any eq 80
+
+	- Numeradas vs. Nomeadas:
+
+	Tipo:		Vantagem:					Exemplo:
+	Numeradas	Rápida configuração.				access-list 1 permit 192.168.1.1
+	Nomeadas	Mais descritivas e flexíveis (permite edição).	ip access-list extended FTP-FILTER
+
+	- Regras para ACLs Nomeadas:
+		.Nomes em MAIÚSCULAS (ex.: BLOCK-VIDEO).
+		.Sem espaços ou pontuação.
+
+4.1.3. Operação das ACLs:
+
+	- Direção de Aplicação:
+
+	Tipo:			Quando é Aplicada:	Uso Comum:
+	Entrada (Inbound)	Antes do roteamento.	Filtro eficiente (descarta tráfego antes de consumir recursos).
+	Saída (Outbound)	Após o roteamento.	Filtro consistente para múltiplas fontes saindo por uma interface.
+
+	- Processamento das ACEs
+		.O roteador verifica cada ACE em ordem.
+		.Se houver match, aplica a ação (permit/deny).
+		.Se não houver match, aplica a negação implícita (bloqueia tudo).
+		.Exemplo:
+			ACL 100:  
+			1. permit tcp 192.168.1.0 0.0.0.255 any eq 80  
+			2. deny tcp any any eq 443  
+			3. deny ip any any (implícito)  
+		.Um pacote HTTP (porta 80) da rede 192.168.1.0/24 é permitido.
+		.Um pacote HTTPS (porta 443) é bloqueado.
+		.Qualquer outro tráfego é negado automaticamente.
+
+4.1.4. Boas Práticas:
+
+	- 🔹 Ordem das ACEs: Regras mais específicas primeiro (ex.: permit host 192.168.1.1 antes de permit 192.168.1.0 0.0.0.255).
+	- 🔹 Necessidade de pelo menos uma permit: Caso contrário, tudo será bloqueado.
+	- 🔹 Testar em ambiente controlado antes de aplicar em produção.
+
+4.1.5. Exemplo de Configuração:
+
+	- ACL Estendida Nomeada (FTP-FILTER)
+
+	       ip access-list extended FTP-FILTER  
+ 		permit tcp 192.168.10.0 0.0.0.255 any eq ftp  
+ 		permit tcp 192.168.10.0 0.0.0.255 any eq ftp-data  
+ 		deny tcp any any  
+               !  
+	       interface GigabitEthernet0/1  
+		 ip access-group FTP-FILTER in  
+
+	- Funcionamento:
+		.Permite FTP (porta 21) e dados FTP (porta 20) apenas para a rede 192.168.10.0/24.
+		.Bloqueia todo o resto.

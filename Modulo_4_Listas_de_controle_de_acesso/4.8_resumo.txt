@@ -1,0 +1,87 @@
+4.8.1 Introdução às Listas de Controle de Acesso (ACLs):
+
+	- Uma ACL é uma sequência de regras (ACEs) que filtram pacotes com base em informações do cabeçalho (Camada 3 ou 4).
+	- Roteadores Cisco não possuem ACLs configuradas por padrão.
+	- Tipos de ACLs IPv4:
+		.Padrão (1-99, 1300-1999): Filtra apenas por endereço de origem.
+		.Estendida (100-199, 2000-2699): Filtra por origem, destino, protocolo e porta.
+	- ACLs nomeadas são preferíveis por serem mais descritivas.
+	- Aplicam-se em entrada (in) ou saída (out) de interfaces.
+
+4.8.2 Máscara Curinga:
+
+	- Usada em ACEs IPv4 para determinar quais bits do endereço devem ser verificados.
+	- Diferença entre máscara de sub-rede e curinga:
+		Sub-rede: 1 = match, 0 = ignorar.
+		Curinga: 0 = match, 1 = ignorar.
+	- Método rápido: Wildcard = 255.255.255.255 - Subnet Mask.
+	- Palavras-chave úteis:
+		host (ex.: host 192.168.1.1 = 192.168.1.1 0.0.0.0).
+		any (ex.: any = 0.0.0.0 255.255.255.255).
+
+4.8.3 Configuração de ACLs:
+
+	- Boas práticas:
+		.Planejar em um editor de texto antes de aplicar.
+		.Incluir comentários (remark) para documentação.
+	- Comandos básicos:
+		.ACL padrão numerada:
+			access-list 10 permit 192.168.1.0 0.0.0.255  
+		.ACL nomeada:
+			ip access-list standard NOME_ACL  
+  			permit 192.168.1.0 0.0.0.255  
+		.Aplicar em interface:
+			interface GigabitEthernet0/0  
+  			ip access-group NOME_ACL in  
+	- ACLs estendidas podem filtrar por:
+		.Protocolo (TCP/UDP/ICMP).
+		.Portas (eq 80, range 20-21).
+		.Estado (established para firewalling básico).
+	- Sintaxe de ACLs Nomeadas IPv4
+		.ACEs podem ser editadas usando números de sequência.
+		.Exemplo:
+			ip access-list extended FIREWALL  
+  			10 permit tcp 192.168.1.0 0.0.0.255 any eq 80  
+  			20 deny ip any any  
+		.Visualização: show access-lists exibe as regras com números de sequência.
+
+	- Boas Práticas de Implementação
+		.Ordem importa: Processamento top-down (a primeira correspondência define a ação).
+		.Regra implícita: deny any no final (bloqueia tudo não permitido).
+		.Específico → Genérico: Ex.: deny host 10.1.1.1 antes de permit any.
+		.Limitações:
+			Apenas uma ACL por direção (in/out) por interface.
+			ACLs de saída não filtram tráfego gerado pelo roteador.
+		.Posicionamento:
+			ACLs padrão: Perto do destino.
+			ACLs estendidas: Perto da origem.
+
+4.8.4 Mitigação de Ataques com ACLs:
+
+	- Bloquear ameaças comuns:
+		.Spoofing IP: Negar endereços reservados (ex.: RFC 1918).
+		.DoS: Limitar ICMP (echo-reply, redirect).
+		.SNMP: Restringir acesso a servidores autorizados.
+	- ICMP recomendado para permitir:
+		.Entrada: echo-reply, source-quench, unreachable.
+		.Saída: echo, parameter-problem, packet-too-big.
+
+4.8.5 ACLs IPv6:S
+
+	- Diferenças do IPv4:
+		.Não existem ACLs padrão (todas são estendidas).
+		.Exigem nome (não usam números).
+		.Suportam filtro por cabeçalhos de extensão IPv6.
+	- Proteção em ambientes Dual Stack:
+		.Bloquear tunelamento não autorizado (ex.: Teredo).
+		.Permitir Neighbor Discovery Protocol (NDP) explicitamente:
+			permit icmp any any nd-na  
+			permit icmp any any nd-ns  
+			Regra implícita: deny ipv6 any any.
+
+4.8.6 Resumo Final:
+
+	- ACLs IPv4: Filtragem básica (padrão) e avançada (estendida).
+	- ACLs IPv6: Mais flexíveis, mas sem equivalentes padrão.
+	- Segurança: Posicionamento correto e regras específicas mitigam ataques.
+	- Documentação e teste são essenciais para evitar erros de configuração.

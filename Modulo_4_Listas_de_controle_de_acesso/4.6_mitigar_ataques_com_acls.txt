@@ -1,0 +1,84 @@
+4.6.1. Mitigação de Spoofing de IP:
+
+	- Endereços IP que Nunca Devem Ser Aceitos como Origem:
+		0.0.0.0/32 (Endereço de rede inválido).
+		127.0.0.0/8 (Loopback).
+		169.254.0.0/16 (APIPA – Auto-configuração falha).
+		.Endereços privados (RFC 1918):
+			10.0.0.0/8
+			172.16.0.0/12
+			192.168.0.0/16
+		224.0.0.0/4 (Multicast).
+		255.255.255.255 (Broadcast).
+
+		.Configuração de ACL para Bloquear Spoofing:
+			access-list 150 deny ip host 0.0.0.0 any
+			access-list 150 deny ip 10.0.0.0 0.255.255.255 any
+			access-list 150 deny ip 127.0.0.0 0.255.255.255 any
+			access-list 150 deny ip 172.16.0.0 0.15.255.255 any
+			access-list 150 deny ip 192.168.0.0 0.0.255.255 any
+			access-list 150 deny ip 224.0.0.0 15.255.255.255 any
+			access-list 150 deny ip host 255.255.255.255 any
+			access-list 150 permit ip any any
+		
+		.Aplicação:
+			interface S0/0/0
+  			ip access-group 150 in
+
+4.6.2. Permitir Tráfego Necessário em Firewalls:
+
+	- Serviços Comuns a Permitir:
+		.DNS (UDP 53) – Resolução de nomes.
+		.SMTP (TCP 25) – Envio de e-mails.
+		.FTP (TCP 21) – Transferência de arquivos.
+		.SSH (TCP 22) – Acesso remoto seguro.
+		.Syslog (UDP 514) – Logs de dispositivos.
+		.SNMP (UDP 161/162) – Gerenciamento de rede.
+	- Exemplo de ACL para Serviços Específicos:
+		access-list 180 permit udp any host 192.168.20.2 eq domain    # DNS
+		access-list 180 permit tcp any host 192.168.20.2 eq smtp     # SMTP
+		access-list 180 permit tcp any host 192.168.20.2 eq ftp      # FTP
+		access-list 180 permit tcp host 200.5.5.5 host 10.0.1.1 eq 22  # SSH
+		access-list 180 permit udp host 200.5.5.5 host 10.0.1.1 eq syslog  # Syslog
+		access-list 180 deny ip any any                              # Bloqueia todo o resto
+	- Aplicação:
+		interface S0/0/0
+  		ip access-group 180 in
+
+4.6.3. Mitigação de Ataques ICMP:
+
+	- Mensagens ICMP a Permitir:
+
+	Entrada (Inbound):			Saída (Outbound):
+	echo-reply (resposta ping)		echo (solicitação ping)
+	source-quench (controle de fluxo)	parameter-problem (erro de cabeçalho)
+	unreachable (destino inacessível)	packet-too-big (ajuste MTU)
+
+	- Exemplo de ACL para ICMP:
+		.Entrada (Bloqueia ping malicioso, permite respostas):
+			access-list 112 permit icmp any any echo-reply
+			access-list 112 permit icmp any any source-quench
+			access-list 112 permit icmp any any unreachable
+			access-list 112 deny icmp any any  # Bloqueia outros tipos de ICMP
+			access-list 112 permit ip any any  # Permite outros protocolos
+		.Saída (Permite ping para troubleshooting):
+			access-list 114 permit icmp 192.168.1.0 0.0.0.255 any echo
+			access-list 114 permit icmp 192.168.1.0 0.0.0.255 any parameter-problem
+			access-list 114 permit icmp 192.168.1.0 0.0.0.255 any packet-too-big
+			access-list 114 deny icmp any any  # Bloqueia outros ICMP
+			access-list 114 permit ip any any  # Permite outros protocolos
+
+4.6.4. Mitigação de Ataques SNMP:
+
+	- Riscos do SNMP:
+		.Exploração de vulnerabilidades (ex.: acesso não autorizado a configurações).
+		.Spoofing de pacotes SNMP.
+	- Medidas de Segurança:
+		.Desative o SNMP se não for necessário:
+			Router(config)# no snmp-server
+		.Restrinja acesso com ACLs:
+			access-list 190 permit udp host 200.5.5.5 host 10.0.1.1 eq snmp
+			access-list 190 deny udp any any eq snmp
+		.Aplicação:
+			interface S0/0/0
+  			ip access-group 190 in

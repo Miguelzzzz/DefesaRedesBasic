@@ -1,0 +1,58 @@
+4.2.1. O que é uma Máscara Curinga?:
+
+	- Uma máscara curinga é um valor de 32 bits usado em ACLs para determinar quais bits de um endereço IPv4 devem ser comparados (0) ou ignorados (1).
+	- Diferença entre Máscara de Sub-rede e Máscara Curinga
+
+		Máscara de Sub-rede:	  Máscara Curinga:
+		1 = Match (corresponde)   0 = Match (corresponde)
+		0 = Ignora		  1 = Ignora
+	
+	- Exemplo:
+		.Sub-rede 255.255.255.0 = 11111111.11111111.11111111.00000000 (os primeiros 24 bits devem corresponder).
+		.Curinga 0.0.0.255 = 00000000.00000000.00000000.11111111 (os últimos 8 bits são ignorados).
+
+4.2.2. Tipos de Máscaras Curinga:
+
+	- 1. Corresponder a um Host Específico
+		.Máscara: 0.0.0.0 (todos os bits devem corresponder).
+		.Exemplo: access-list 10 permit 192.168.1.1 0.0.0.0
+			Equivalente com palavra-chave: access-list 10 permit host 192.168.1.1
+	- 2. Corresponder a uma Sub-rede
+		.Máscara: 0.0.0.255 (ignora o último octeto).
+		.Exemplo: access-list 20 permit 192.168.1.0 0.0.0.255
+		.Permite todos os hosts em 192.168.1.0/24.
+	- 3. Corresponder a um Intervalo de Redes
+		.Máscara: 0.0.15.255 (permite redes de 192.168.16.0 a 192.168.31.0).
+		.Exemplo: access-list 30 permit 192.168.16.0 0.0.15.255
+
+4.2.3. Como Calcular a Máscara Curinga:
+
+	- Fórmula:
+		.Máscara Curinga = 255.255.255.255 - Máscara de Sub-rede
+	- Exemplos:
+
+	Sub-rede:	  Cálculo:				Máscara Curinga:	Uso em ACL:
+	255.255.255.0	  255.255.255.255 - 255.255.255.0	0.0.0.255		permit 192.168.3.0 0.0.0.255
+	255.255.255.240	  255.255.255.255 - 255.255.255.240	0.0.0.15		permit 192.168.3.32 0.0.0.15
+	255.255.254.0	  255.255.255.255 - 255.255.254.0	0.0.1.255		permit 192.168.10.0 0.0.1.255
+	
+4.2.4. Palavras-Chave para Simplificar ACLs:
+
+	Palavra-Chave:	Equivalente:	Exemplo:
+	host		0.0.0.0		permit host 192.168.1.1
+	any		255.255.255.255	permit any
+
+	- Comparação:
+		.Forma tradicional:
+		access-list 10 permit 192.168.10.10 0.0.0.0
+		access-list 11 permit 0.0.0.0 255.255.255.255
+
+		.Forma simplificada:
+		access-list 10 permit host 192.168.10.10
+		access-list 11 permit any
+
+4.2.5. Conclusão:
+
+	- Máscaras curinga são essenciais para filtrar tráfego em ACLs.
+	- 0 = Match, 1 = Ignora (o oposto da máscara de sub-rede).
+	- Use host e any para simplificar configurações.

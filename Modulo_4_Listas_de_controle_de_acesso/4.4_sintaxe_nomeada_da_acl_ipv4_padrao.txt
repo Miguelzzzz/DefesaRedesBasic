@@ -1,0 +1,66 @@
+4.4.1. Introdução:
+
+	- ACLs podem precisar de ajustes após a configuração inicial devido a:
+		.Erros de digitação (ex.: IP incorreto).
+		.Mudanças nos requisitos de segurança.
+		.Comportamento inesperado do tráfego filtrado.
+	- Dois métodos principais para modificar ACLs:
+		.Editor de Texto (recomendado para ACLs complexas).
+		.Números de Sequência (para edição direta no roteador).
+
+4.4.2. Método do Editor de Texto:
+
+	- Passos:
+		.Copie a ACL atual do roteador:
+			R1# show run | section access-list
+		.Exemplo de saída:
+			access-list 1 deny 19.168.10.10   # Erro: IP deveria ser 192.168.10.10
+			access-list 1 permit 192.168.10.0 0.0.0.255
+
+		.Cole em um editor de texto (ex.: Notepad++, VS Code) e corrija os erros.
+		.Remova a ACL antiga no roteador:
+			R1(config)# no access-list 1
+		.Cole a ACL corrigida no modo de configuração global:
+			R1(config)# access-list 1 deny 192.168.10.10
+			R1(config)# access-list 1 permit 192.168.10.0 0.0.0.255
+	- Vantagens:
+		.Ideal para ACLs com múltiplas ACEs.
+		.Permite planejamento offline e revisão.
+
+4.4.3. Método de Números de Sequência:
+
+	- Passos:
+		.Verifique os números de sequência da ACL:
+			R1# show access-lists
+		.Saída:
+			Standard IP access list 1
+   			   10 deny 19.168.10.10    # Sequência 10 (incorreta)
+   			   20 permit 192.168.10.0, wildcard bits 0.0.0.255
+		.Acesse o modo de edição da ACL:
+			R1(config)# ip access-list standard 1
+		.Remova a ACE incorreta pelo número de sequência:
+			R1(config-std-nacl)# no 10
+		.Adicione a ACE corrigida:
+			R1(config-std-nacl)# 10 deny host 192.168.10.10
+		.Verifique as alterações:
+			R1# show access-lists
+	- Vantagens:
+		.Edição rápida sem recriar toda a ACL.
+		.Útil para correções pontuais.
+
+4.4.4. Comparação dos Métodos:
+
+	Critério:		Editor de Texto:			Números de Sequência:
+	Complexidade		Melhor para ACLs longas/complexas.	Ideal para pequenas correções.
+	Precisão		Reduz erros de digitação.		Requer cuidado ao editar ACEs.
+	Impacto no Tráfego	Remove/reconfigura toda a ACL.		Altera apenas ACEs específicas.
+	Ferramentas Necessárias	Editor de texto externo.		Acesso direto ao CLI do roteador.
+
+4.4.5. Boas Práticas:
+
+	- Documente as ACLs com remark:
+		access-list 100 remark "Permitir HTTP para rede 192.168.1.0/24"
+	- Teste em ambiente controlado antes de aplicar em produção.
+	- Monitore logs para identificar regras problemáticas:
+		R1# show access-lists
+	- Use ACLs nomeadas para facilitar edições futuras.

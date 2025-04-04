@@ -1,0 +1,66 @@
+4.7.1 Visão Geral do IPv6 ACL:
+
+	- Nos últimos anos, muitas redes começaram a transição para um ambiente IPv6. Parte da necessidade da transição para IPv6 é por causa das fraquezas inerentes no IPv4.
+	- Infelizmente, como a migração para o IPv6 continua, os ataques IPv6 estão se tornando mais difundidos. IPv4 não desaparecerá durante a noite. O IPv4 coexistirá com o IPv6 e, em seguida, será gradualmente substituído pelo IPv6. Isso cria potenciais brechas de segurança. Um exemplo de uma preocupação de segurança é que os atores de ameaça aproveitam o IPv4 para explorar o IPv6 em ambientes de pilha dupla.
+	- Dual Stack é um método de integração no qual um dispositivo tem conectividade para as redes IPv4 e IPv6. Em dispositivos de ambiente de pilha dupla, operam com duas pilhas de protocolo IP.
+	
+	- Ameaças comuns em ambientes de pilha dupla:
+		.Ataques furtivos que exploram a confiança em hosts de pilha dupla.
+		.Mensagens NDP (Neighbor Discovery Protocol) desonestas.
+		.Técnicas de tunelamento, como Teredo Tunneling, que encapsula pacotes IPv6 em IPv4 (UDP).
+	- Exemplo de exploração:
+		.O ator de ameaças ganha acesso via IPv4.
+		.Envia Rogue Router Advertisements (RAs) IPv6.
+		.Hosts com pilha dupla configuram automaticamente endereços IPv6.
+		.O ator pivoteia na rede IPv6, comprometendo hosts adicionais.
+	- Conclusão:
+		.É necessário desenvolver estratégias de mitigação, incluindo filtragem na borda usando ACLs IPv6.
+
+4.7.2 Sintaxe da ACL IPv6:
+
+	- A funcionalidade das ACLs no IPv6 é semelhante às do IPv4, mas com diferenças importantes:
+	- Não existem ACLs padrão equivalentes às do IPv4.
+	- Todas as ACLs IPv6 devem ter um nome.
+	- Suportam filtragem baseada em:
+		.Endereços de origem/destino.
+		.Cabeçalhos de extensão IPv6.
+		.Informações de protocolo de camada superior (granularidade fina).
+	- Sintaxe básica:
+		Router(config)# ipv6 access-list access-list-name  
+		Router(config-ipv6-acl)# [deny | permit] protocol {source-ipv6-prefix/prefix-length | any | host source-ipv6-address} [operator [port-number]] {destination-ipv6-prefix/prefix-length | any | host destination-ipv6-address} [operator [port-number]] [dscp value] [fragments] [log] [log-input] [sequence value] [time-range name]  
+	
+	- Parâmetros-chave (tabela resumida):
+
+	Parâmetro:	Descrição:
+	deny/permit	Bloqueia ou permite pacotes.
+	protocol	Nome ou número do protocolo (TCP, UDP, ICMPv6, etc.).
+	source/dest	Prefixo IPv6, any (qualquer endereço) ou host (endereço específico).
+	operator	Comparação de portas (lt, gt, eq, neq, range).
+	fragments	Filtra pacotes fragmentados (sem informações de camada 4).
+	log/log-input	Registra eventos no console (log-input inclui a interface de entrada).
+	sequence	Número de ordem da regra (1–4,294,967,295).
+
+	- Observações:
+		.As ACLs IPv6 são mais flexíveis que as do IPv4.
+		.Devem ser aplicadas a interfaces com ipv6 traffic-filter.
+
+4.7.3 Configurar ACLs de IPv6:
+
+	- Regras implícitas em ACLs IPv6:
+		.deny ipv6 any any (nega todo tráfego não explicitamente permitido).
+		.Permissões automáticas para NDP (Neighbor Discovery Protocol):
+			Se um administrador bloquear todo o tráfego (deny ipv6 any any) sem permitir NDP explicitamente, a rede IPv6 local pode parar de funcionar.
+	- Exemplo de configuração:
+		R1(config)# ipv6 access-list LAN_ONLY  
+		R1(config-ipv6-acl)# permit ipv6 2001:db8:1:1::/64 any  
+		R1(config-ipv6-acl)# permit icmp any any nd-na  # Permite mensagens ND-NA  
+		R1(config-ipv6-acl)# permit icmp any any nd-ns  # Permite mensagens ND-NS  
+		R1(config-ipv6-acl)# deny ipv6 any any  # Regra implícita (documentada)  
+		R1(config-ipv6-acl)# end  
+	- Boas práticas:
+		.Documentar regras implícitas (como deny ipv6 any any).
+		.Permitir explicitamente ND-NA e ND-NS para evitar problemas de conectividade local.
+		.Usar show ipv6 access-list para verificar as regras.
+	- Aplicação em interfaces:
+		R1(config)# interface GigabitEthernet0/0  
+		R1(config-if)# ipv6 traffic-filter LAN_ONLY in  

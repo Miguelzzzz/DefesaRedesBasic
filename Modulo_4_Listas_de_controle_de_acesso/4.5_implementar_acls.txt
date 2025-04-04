@@ -1,0 +1,86 @@
+4.5.1. Princípios Básicos de Posicionamento de ACLs:
+
+	- Regras Gerais:
+		.ACLs Padrão (Standard):
+			Filtram apenas pelo IP de origem.
+			Devem ser posicionadas o mais próximo possível do destino para evitar bloquear tráfego legítimo para outros destinos.
+		.ACLs Estendidas (Extended):
+			Filtram por IP de origem/destino, protocolo e porta.
+			Devem ser posicionadas o mais próximo possível da origem para economizar largura de banda e recursos de rede.
+
+4.5.2. Exemplos de Posicionamento:
+
+	- Cenário 1: Bloquear tráfego de 192.168.10.0/24 para 192.168.30.0/24
+		.Solução com ACL Padrão (no destino):
+			Onde aplicar: Interface G0/0/0 do roteador R3 (saída).
+			Por quê?
+				Se aplicada na entrada de S0/1/1 em R3, bloquearia também o tráfego para 192.168.31.0/24.
+				Na saída de G0/0/0, afeta apenas o tráfego para 192.168.30.0/24.
+			Configuração:
+				R3(config)# access-list 1 deny 192.168.10.0 0.0.0.255
+				R3(config)# access-list 1 permit any
+				R3(config)# interface G0/0/0
+				R3(config-if)# ip access-group 1 out
+
+		.Solução com ACL Estendida (na origem):
+			Onde aplicar: Interface G0/0/0 do roteador R1 (entrada).
+			Por quê?
+				Bloqueia o tráfego indesejado antes que ele atravesse a rede.
+			Configuração:
+				R1(config)# access-list 100 deny ip 192.168.10.0 0.0.0.255 192.168.30.0 0.0.0.255
+				R1(config)# access-list 100 permit ip any any
+				R1(config)# interface G0/0/0
+				R1(config-if)# ip access-group 100 in
+	- Cenário 2: Bloquear FTP e Telnet de 192.168.11.0/24 para 192.168.30.0/24
+		.Solução com ACL Estendida (na origem):
+			Onde aplicar: Interface G0/0/1 do roteador R1 (entrada).
+			Por quê?
+				Filtra o tráfego específico antes que ele consuma recursos da rede.
+			Configuração:
+				R1(config)# access-list 101 deny tcp 192.168.11.0 0.0.0.255 192.168.30.0 0.0.0.255 eq 21  # FTP
+				R1(config)# access-list 101 deny tcp 192.168.11.0 0.0.0.255 192.168.30.0 0.0.0.255 eq 23  # Telnet
+				R1(config)# access-list 101 permit ip any any
+				R1(config)# interface G0/0/1
+				R1(config-if)# ip access-group 101 in
+
+4.5.3. Fatores que Influenciam o Posicionamento:
+
+Fator:			Impacto no Posicionamento:
+Controle da Rede	Se você não controla um roteador (ex.: ISP), aplique a ACL no dispositivo mais próximo sob seu controle.
+Largura de Banda	ACLs estendidas na origem evitam tráfego indesejado em links de WAN.
+Complexidade		ACLs estendidas exigem mais configuração, mas oferecem maior precisão.
+
+4.5.4. Boas Práticas:
+
+	- Ordem das ACEs:
+		.Regras mais específicas primeiro (ex.: deny host 192.168.1.1 antes de permit 192.168.1.0 0.0.0.255).
+	- Use ACLs Nomeadas:
+		.Facilita a manutenção (ex.: ip access-list extended BLOCK-FTP).
+	- Documente com remark:
+		.access-list 100 remark "Bloquear FTP de 192.168.11.0/24 para 192.168.30.0/24"
+	- Teste Antes de Aplicar:
+		.Use show access-lists para verificar estatísticas de correspondência.
+	- Evite log em Produção:
+		.O parâmetro log consome CPU. Use apenas para troubleshooting.
+
+4.5.5. Aplicação em Interfaces e VTY:
+
+	- Em Interfaces:
+		Router(config-if)# ip access-group <ACL-num|ACL-name> {in|out}
+		
+		.Exemplo:
+			interface GigabitEthernet0/0
+  			ip access-group SURFING in
+
+	- Em Linhas VTY (Acesso Remoto):
+		Router(config-line)# access-class <ACL-num|ACL-name> {in|out}
+		
+		.Exemplo:
+			line vty 0 4
+  			access-class VTY_ACCESS in
+
+4.5.6. Conclusão:
+
+	- ACLs Padrão: Use para filtros simples (IP de origem) e posicione perto do destino.
+	- ACLs Estendidas: Use para filtros granulares (portas, protocolos) e posicione perto da origem.
+	- Sempre valide com show access-lists após aplicação.

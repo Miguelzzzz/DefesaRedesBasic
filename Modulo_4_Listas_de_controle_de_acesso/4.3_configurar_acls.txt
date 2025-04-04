@@ -1,0 +1,140 @@
+4.3.1. O que é uma ACL Padrão?:
+
+	- Uma ACL padrão filtra tráfego com base apenas no endereço IP de origem. É usada para controles de acesso simples.
+		.Características:
+			Números: 1–99 ou 1300–1999 (ACLs numeradas).
+			Filtro: Apenas IP de origem (não porta/protocolo).
+			Aplicação: Ideal para restringir acesso a redes inteiras.
+
+4.3.2. Sintaxe de Configuração:
+
+	- ACL Numerada
+		.Router(config)# access-list <1-99|1300-1999> {deny|permit|remark} <source> [source-wildcard] [log]
+
+	Parâmetro:		Descrição:							Exemplo:
+	access-list-number	Número da ACL (1-99 ou 1300-1999).				access-list 10
+	deny/permit		Bloqueia ou permite o tráfego.					deny 192.168.1.0 0.0.0.255
+	remark			Comentário para documentação (até 100 caracteres).		remark "Bloquear rede RH"
+	source			IP de origem (use host para um IP ou any para todos).		host 192.168.1.1 ou any
+	source-wildcard		Máscara curinga (padrão: 0.0.0.0 se omitido).			0.0.0.255 para uma sub-rede /24
+	log			Registra pacotes correspondentes (cuidado: alto uso de CPU).	deny any log
+
+	- Exemplo:
+		access-list 10 deny 192.168.1.0 0.0.0.255
+		access-list 10 permit any
+	- ACL Nomeada
+		Router(config)# ip access-list standard <nome>
+		Router(config-std-nacl)# {deny|permit|remark} <source> [source-wildcard] [log]
+		
+		.Vantagens:
+			Nomes descritivos (ex.: BLOCK-RH).
+			Facilita edição (não precisa reescrever toda a ACL).
+		.Exemplo:
+			ip access-list standard NO-ACCESS
+  			deny 192.168.1.0 0.0.0.255
+  			permit any
+
+4.3.3. Boas Práticas:
+
+	- Planeje antes de configurar:
+		.Use um editor de texto para rascunhar as regras.
+		.Adicione comentários (remark) para documentação.
+	- Ordem das ACEs:
+		.Regras mais específicas primeiro (ex.: host 192.168.1.1 antes de 192.168.1.0 0.0.0.255).
+	- Teste em ambiente controlado:
+		.Aplique a ACL em uma interface temporária para verificar o comportamento.
+	- Use log com moderação:
+		.Pode sobrecarregar a CPU. Use apenas para troubleshooting.
+
+4.3.4. Exemplos Práticos:
+
+	- Bloquear uma Sub-rede
+		access-list 20 deny 192.168.2.0 0.0.0.255
+		access-list 20 permit any
+		
+		.Explicação:
+			Bloqueia toda a rede 192.168.2.0/24.
+			Permite todo o resto.
+
+	- Permitir Apenas um Host
+		ip access-list standard ALLOW-MGMT
+ 		 permit host 10.0.0.5
+  		deny any
+
+		.Explicação:
+			Apenas o host 10.0.0.5 tem acesso.
+			Bloqueia todos os outros.
+
+4.3.5. O que é uma ACL Estendida?:
+
+	- Uma ACL estendida filtra tráfego com base em:
+		.Endereços IP de origem/destino.
+		.Protocolos (TCP, UDP, ICMP, etc.).
+		.Portas (HTTP, HTTPS, FTP, etc.).
+		.Estado da conexão (usando established para tráfego de retorno).
+	- Características:
+		.Números: 100–199 ou 2000–2699 (ACLs numeradas).
+		.Granularidade: Controle preciso de tráfego (ex.: bloquear SSH apenas para uma rede).
+
+4.3.6. Sintaxe de Configuração:
+
+	- ACL Numerada
+		Router(config)# access-list <100-199|2000-2699> {deny|permit} <protocol> <source> <source-wildcard> [operator <port>] <destination> <destination-wildcard> [operator <port>] [established] [log]
+		
+		.Exemplo:
+			access-list 100 permit tcp 192.168.1.0 0.0.0.255 any eq 80
+			access-list 100 deny tcp any any eq 22
+	- ACL Nomeada
+		Router(config)# ip access-list extended <nome>
+		Router(config-ext-nacl)# {deny|permit} <protocol> <source> <source-wildcard> [operator <port>] <destination> <destination-wildcard> [operator <port>] [established] [log]
+
+		.Exemplo:
+			ip access-list extended BLOCK-SSH
+  			deny tcp any any eq 22
+  			permit ip any any
+
+4.3.7. Parâmetros Principais:
+
+	Parâmetro:		Descrição:						Exemplo:
+	protocol		tcp, udp, icmp, ip (todos os protocolos).		permit tcp
+	source/destination	IP de origem/destino (use host ou any).			host 192.168.1.1
+	source-wildcard		Máscara curinga para origem.				0.0.0.255 (sub-rede /24)
+	operator		eq (igual), gt (maior), lt (menor).			eq 443 (HTTPS)
+	established		Permite apenas tráfego de retorno (respostas TCP).	permit tcp any any established
+	log			Registra pacotes correspondentes (uso moderado).	deny tcp any any log
+	
+4.3.8. Exemplos Práticos:
+
+	- 1. Permitir HTTP/HTTPS e Bloquear SSH
+		access-list 110 permit tcp 192.168.10.0 0.0.0.255 any eq 80
+		access-list 110 permit tcp 192.168.10.0 0.0.0.255 any eq 443
+		access-list 110 deny tcp any any eq 22
+		access-list 110 permit ip any any
+
+	- 2. Usando established para Tráfego de Retorno
+		access-list 120 permit tcp any 192.168.10.0 0.0.0.255 established
+
+		.Funcionamento:
+			Permite apenas respostas a conexões iniciadas internamente.
+
+	- 3. ACL Nomeada para Controle de Acesso
+		ip access-list extended SURFING
+ 		permit tcp 192.168.10.0 0.0.0.255 any eq 80
+  		permit tcp 192.168.10.0 0.0.0.255 any eq 443
+
+4.3.9. Aplicação em Interfaces:
+
+	Router(config-if)# ip access-group <ACL-num|ACL-name> {in|out}
+	
+	.Exemplo:
+		interface GigabitEthernet0/0
+  		ip access-group SURFING in
+  		ip access-group BROWSING out
+
+
+4.3.10. Boas Práticas:
+
+	- Ordene as ACEs do mais específico para o mais genérico.
+	- Use ACLs nomeadas para facilitar a manutenção.
+	- Teste em laboratório antes de aplicar em produção.
+	- Monitore logs com show access-lists para ajustar regras.
