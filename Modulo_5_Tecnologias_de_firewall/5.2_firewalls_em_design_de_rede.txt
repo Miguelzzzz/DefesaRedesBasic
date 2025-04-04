@@ -1,0 +1,79 @@
+5.2.1 Arquiteturas Comuns de Segurança:
+
+	- 1. Modelo Privado (Trusted) vs. Público (Untrusted)
+		.Rede Pública (Untrusted): Internet ou redes externas não confiáveis.
+		.Rede Privada (Trusted): Rede interna da organização.
+	- Configuração Típica:
+		.Tráfego de Saída (Privado → Público): Permitido e inspecionado.
+		.Tráfego de Entrada (Público → Privado): Bloqueado por padrão.
+		.Retorno de Tráfego (Respostas): Permitido se associado a uma conexão interna legítima.
+	- Exemplo:
+		.Um servidor interno acessa um site externo (HTTP/SMTP/DNS permitidos).
+		.Ataques externos são bloqueados antes de atingir a rede privada.
+
+	- 2. Zona Desmilitarizada (DMZ)
+		.Objetivo: Isolar serviços acessíveis publicamente (ex.: servidores web, email) da rede interna.
+		.Interfaces Típicas:
+			Externa (Pública).
+			DMZ (Servidores públicos).
+			Interna (Privada).
+	- Regras de Tráfego:
+
+	Origem → Destino	Ação
+	Privada → DMZ/Pública	Permitido (inspecionado).
+	DMZ → Privada		Bloqueado (exceto respostas autorizadas).
+	Pública → DMZ		Permitido seletivamente (HTTP/HTTPS/SMTP).
+	Pública → Privada	Bloqueado.
+	
+	- Exemplo de Uso:
+		.Um servidor web na DMZ recebe tráfego da Internet, mas não pode iniciar conexões para a rede interna.
+
+	- 3. Firewalls Baseados em Zonas (ZPF - Zone-Based Policy Firewall)
+		.Conceito: Agrupa interfaces em zonas (ex.: LAN, WAN, DMZ) e aplica políticas entre elas.
+		.Princípios:
+			Tráfego Intra-Zona: Permitido por padrão.
+			Tráfego Inter-Zona: Bloqueado até que uma política seja configurada.
+			Zona Self (Auto): Representa o roteador (gerenciamento SSH/SNMP).
+		.Vantagens:
+			✔ Flexibilidade: Políticas personalizadas por zona (ex.: LAN1 ↔ WAN).
+			✔ Granularidade: Controle fino sobre tráfego entre grupos lógicos.
+		.Exemplo de Configuração:
+			zone security LAN  
+			zone security WAN  
+			policy-map LAN-to-WAN  
+ 			 class type inspect HTTP  
+    			permit  
+			interface GigabitEthernet0/0  
+  			zone-member security LAN  
+			interface Serial0/0/0  
+  			zone-member security WAN 
+ 
+5.2.2 Defesa em Camadas (Defense-in-Depth):
+
+	- Camadas de Segurança:
+		.Núcleo da Rede:
+			Filtra malware e anomalias.
+			Garante resiliência (ex.: QoS, redundância).
+		.Perímetro:
+			Firewalls de borda (ex.: filtragem stateful).
+			DMZs para serviços públicos.
+		.Comunicações:
+			Criptografia (VPNs, TLS).
+			Prevenção de vazamento de dados.
+		.Endpoint:
+			Autenticação de dispositivos (ex.: 802.1X).
+			Antivírus/EDR (Endpoint Detection and Response).
+	- Práticas Recomendadas:
+		.Negar Tudo por Padrão: Só permitir tráfego essencial.
+		.Monitorar Logs: Identificar tentativas de intrusão.
+		.Controle Físico: Restringir acesso aos dispositivos de segurança.
+		.Gerenciamento de Mudanças: Documentar alterações em firewalls.
+	- Limitações:
+		.Firewalls não previnem ataques internos ou APTs (Advanced Persistent Threats).
+		.Não substituem backups ou treinamento de usuários.
+	- Comparativo das Arquiteturas
+
+	Arquitetura:		Caso de Uso:				Complexidade:
+	Privado/Público		Pequenas redes sem serviços públicos.	Baixa.
+	DMZ			Empresas com servidores web/email.	Média.
+	Zonas (ZPF)		Redes grandes com múltiplos segmentos.	Alta.

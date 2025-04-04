@@ -1,0 +1,59 @@
+5.3.1 Tipos de Firewalls e Suas Funções:
+
+	- Os firewalls são essenciais para proteger redes, e existem diferentes tipos, cada um com suas características:
+	- Firewall de Filtragem de Pacotes (Sem Estado):
+		.Filtra tráfego baseado em endereços IP, portas e protocolos (Camadas 3 e 4).
+		.Vantagem: Baixo overhead, ideal para redes simples.
+		.Limitação: Não rastreia conexões, vulnerável a spoofing.
+	- Firewall de Inspeção com Estado (Stateful):
+		.Mantém uma tabela de estado das conexões ativas.
+		.Permite/bloqueia tráfego com base no contexto da sessão.
+		.Vantagem: Mais seguro contra ataques como DoS e falsificação.
+		.Limitação: Não inspeciona conteúdo da camada de aplicação.
+	- Firewall de Gateway de Aplicação (Proxy):
+		.Filtra até a Camada 7 (HTTP, FTP, DNS).
+		.Atua como intermediário entre cliente e servidor.
+		.Vantagem: Bloqueia ameaças baseadas em conteúdo (ex.: malware em HTTP).
+		.Limitação: Alto custo computacional, maior latência.
+	- Firewall de Próxima Geração (NGFW):
+		.Combina stateful inspection + IPS + controle de aplicativos.
+		.Recursos avançados:
+			Prevenção de intrusão (IPS).
+			Filtro de aplicativos (ex.: bloquear redes sociais).
+			Atualizações dinâmicas contra novas ameaças.
+
+5.3.2. Arquiteturas de Segurança em Redes:
+
+	- Projetar uma rede segura envolve definir como o tráfego flui entre zonas de confiança.
+	- Modelo Básico (Rede Interna vs. Externa):
+		.Rede Externa (Untrusted): Internet.
+		.Rede Interna (Trusted): Corporativa.
+		.Regras:
+			Saída (interno → externo): Permitido.
+			Entrada (externo → interno): Bloqueado.
+	- Zona Desmilitarizada (DMZ):
+		.Objetivo: Isolar servidores acessíveis publicamente (web, email).
+		.Regras:
+			Internet → DMZ: Permitido (HTTP/HTTPS/SMTP).
+			DMZ → Rede Interna: Bloqueado (exceto respostas autorizadas).
+	- Firewalls Baseados em Zonas (ZPF):
+		Agrupa interfaces em zonas lógicas (ex.: LAN, WAN, DMZ).
+		Vantagens:
+			.Políticas granulares entre zonas.
+			.Controle centralizado de tráfego.
+
+5.3.3. Defesa em Camadas (Defense-in-Depth):
+
+	- Uma estratégia robusta combina múltiplas camadas de segurança:
+	- Filtragem no Perímetro:
+		.Firewalls de borda (stateful/NGFW).
+		.Bloqueio de tráfego malicioso antes de entrar na rede.
+	- Segmentação Interna:
+		.VLANs, Zonas de Segurança (ZPF).
+		.Limitação de movimentação lateral em caso de invasão.
+	- Proteção de Endpoints:
+		.Antivírus, EDR (Endpoint Detection and Response).
+		.Autenticação forte (ex.: 802.1X).
+	- Monitoramento Contínuo:
+		.SIEM (Security Information and Event Management).
+		.Análise de logs em tempo real.

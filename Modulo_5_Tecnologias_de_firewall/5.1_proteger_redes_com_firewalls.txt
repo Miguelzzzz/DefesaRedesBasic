@@ -1,0 +1,80 @@
+5.1.1 Firewalls:
+
+	- Definição:
+		.Um firewall é um sistema que aplica políticas de controle de acesso entre redes, atuando como barreira entre redes confiáveis e não confiáveis.
+	- Propriedades Comuns:
+		.Resistência a ataques.
+		.Único ponto de trânsito para todo o tráfego entre redes.
+		.Reforço de políticas de segurança.
+	- Benefícios:
+		.✔ Proteção de hosts sensíveis contra usuários não confiáveis.
+		.✔ Sanitização de fluxos de protocolo (evita exploração de vulnerabilidades).
+		.✔ Bloqueio de dados maliciosos.
+		.✔ Redução da complexidade de gerenciamento de segurança.
+	Limitações:
+		.✖ Ponto único de falha se mal configurado.
+		.✖ Restrições a aplicações que não podem trafegar por firewalls.
+		.✖ Contornável por usuários (ex.: VPNs não autorizadas).
+		.✖ Impacto no desempenho da rede.
+		.✖ Tráfego mascarado pode burlar filtros.
+
+5.1.2 Tipos de Firewalls:
+
+	- 1. Firewall de Filtragem de Pacotes (Sem Estado)
+		.Camadas 3 e 4 (IP, TCP/UDP).
+		.Sem contexto de conexão (cada pacote é analisado isoladamente).
+		.Exemplo: Bloquear porta 25 (SMTP) em uma estação de trabalho.
+	- Vantagens:
+		.✔ Baixo impacto no desempenho.
+		.✔ Fácil implementação (suportada por roteadores).
+	- Limitações:
+		.✖ Vulnerável a spoofing de IP.
+		.✖ Dificuldade com pacotes fragmentados.
+		.✖ Não suporta negociação dinâmica de portas (ex.: FTP).
+
+	- 2. Firewall com Estado (Stateful)
+		.Monitora conexões ativas (tabela de estado).
+		.Camadas 3, 4 e 5 (analisa sessões).
+	- Benefícios:
+		.✔ Defesa contra spoofing e DoS (valida pacotes em conexões existentes).
+		.✔ Melhor desempenho vs. filtros sem estado.
+		.✔ Logs mais detalhados.
+	- Limitações:
+		.✖ Não inspeciona camada de aplicação (ex.: conteúdo HTTP).
+		.✖ Suporte limitado a protocolos sem estado (UDP, ICMP).
+		.✖ Dificuldade com portas dinâmicas (ex.: aplicações P2P).
+
+	Comparativo:		Stateful:			Sem Estado:
+	Contexto de conexão	Mantém tabela de estado		Analisa pacotes isolados
+	Desempenho		Alto				Muito alto
+	Segurança		Mais robusto			Básico
+
+	- 3. Firewall de Gateway de Aplicação (Proxy):
+		.Inspeção até a camada 7 (HTTP, FTP, etc.).
+		.Intermediário entre cliente e servidor.
+		.Vantagens:
+			✔ Filtragem profunda (conteúdo de aplicação).
+			✔ Oculta endereços internos.
+		.Desvantagens:
+			✖ Alto custo computacional.
+			✖ Latência aumentada.
+
+	- 4. Firewall de Última Geração (NGFW):
+		.Combina:
+			Stateful inspection.
+			Prevenção de intrusão (IPS).
+			Controle de aplicativos (ex.: bloquear Spotify).
+			Atualizações dinâmicas contra novas ameaças.
+		.Casos de Uso:
+			Redes corporativas com tráfego complexo.
+			Proteção contra ameaças avançadas (ex.: malware encapsulado).
+
+5.1.3 Vantagens e Limitações do Firewall Stateful:
+
+	- Continuação:
+		.Stateful firewalls são ideais para redes modernas, mas exigem:
+			Hardware dedicado para alta performance.
+			Configuração cuidadosa de regras de estado.
+		.Exemplo de uso:
+			# Permite tráfego HTTP apenas se iniciado de dentro da rede:  
+			permit tcp 192.168.1.0/24 any eq 80 established  
