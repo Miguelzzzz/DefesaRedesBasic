@@ -1,0 +1,46 @@
+3.2.1. Segurança Zero Trust (Confiança Zero):
+
+	- Princípio: "Nunca confie, sempre verifique" – nenhum usuário, dispositivo ou aplicação é confiável por padrão, mesmo dentro da rede.
+	- Pilares do Zero Trust:
+		.Força de Trabalho:
+			Garante que apenas usuários autorizados e dispositivos seguros acessem aplicações, independentemente da localização (ex.: funcionários, parceiros).
+			Exemplo: Autenticação multifator (MFA) para acesso remoto.
+		.Cargas de Trabalho:
+			Protege aplicações em nuvem, APIs, microsserviços e contêineres que interagem entre si.
+			Exemplo: Controle de acesso entre microsserviços em um ambiente Kubernetes.
+		.Local de Trabalho:
+			Controla acesso de dispositivos IoT, servidores, impressoras e outros equipamentos conectados à rede.
+			Exemplo: Segmentação de rede para evitar que uma câmera IoT comprometida acesse servidores críticos
+	- Benefícios:
+		.✅ Reduz movimentação lateral de invasores.
+		.✅ Minimiza riscos de acesso não autorizado.
+		.✅ Adequado para ambientes híbridos (nuvem + local).
+
+3.2.2. Modelos de Controle de Acesso:
+
+	- Tipos Principais:
+
+	Modelo:					Descrição:							Exemplo de Uso:
+	DAC (Discretionary Access Control)	O proprietário dos dados define permissões (ex.: ACLs).		Usuário compartilha arquivo no Google Drive.
+	MAC (Mandatory Access Control)		Níveis rígidos de segurança (ex.: militar, governo).		Documentos classificados como "Top Secret".
+	RBAC (Role-Based Access Control)	Acesso baseado em funções (ex.: gerente, analista).		Funcionário de RH acessa folhas de pagamento.
+	ABAC (Attribute-Based Access Control)	Acesso baseado em atributos (usuário, recurso, contexto).	Acesso liberado apenas em horário comercial.
+	RBAC (Rule-Based Access Control)	Regras definidas por administradores (ex.: IP permitido).	Firewall bloqueia tráfego de países específicos.
+	TAC (Time-Based Access Control)		Acesso restrito por horário.					Sistemas bancários acessíveis apenas das 9h às 18h.
+
+	- Princípio do Privilégio Mínimo
+		.Usuários recebem apenas o acesso necessário para suas funções.
+		.Risco: Escalação de privilégios (invasores exploram falhas para ganhar acesso elevado).
+
+3.2.3. Network Access Control (NAC):
+
+	- Objetivo: Controlar quem e quais dispositivos podem acessar a rede.
+	- Funcionalidades do NAC:
+		.✔ Autenticação de dispositivos (BYOD, IoT).
+		.✔ Verificação de conformidade (antivírus atualizado, patches instalados).
+		.✔ Segmentação de rede (isolamento de dispositivos não confiáveis).
+		.✔ Controle de acesso para convidados (via portal de autenticação).
+		.Exemplo: Um NAC bloqueia um laptop sem antivírus atualizado antes que ele se conecte à rede corporativa.
+	- Importância no Zero Trust:
+		.NAC ajuda a aplicar políticas de segurança automaticamente.
+		.Fundamental para ambientes com muitos dispositivos IoT e BYOD.

@@ -1,0 +1,36 @@
+3.1.1. Controles de Acesso Físicos:
+
+	- São barreiras reais que impedem o acesso não autorizado a instalações e equipamentos.
+	- Exemplos: Guardas, cercas, detectores de movimento, bloqueios de laptop, cartões de acesso, câmeras, sistemas Mantrap, alarmes.
+
+3.1.2. Controles de Acesso Lógicos:
+
+	- São soluções de hardware e software que gerenciam o acesso a sistemas e dados.
+	- Exemplos: Criptografia, cartões inteligentes, senhas, biometria, firewalls, ACLs (Listas de Controle de Acesso), IDS (Sistemas de Detecção de Intrusão).
+
+3.1.3. Controles de Acesso Administrativos:
+
+	- São políticas e procedimentos que regulam o acesso dentro de uma organização.
+	- Exemplos: Políticas de segurança, procedimentos operacionais, verificações de antecedentes, classificação de dados, treinamento em segurança.
+	- AAA (Autenticação, Autorização e Accounting)
+		.1. Autenticação
+			Verifica a identidade do usuário antes de conceder acesso.
+			Métodos: 
+				Algo que você sabe (senha, PIN).
+				Algo que você tem (cartão inteligente, token).
+				Algo que você é (biometria: impressão digital, reconhecimento facial).
+				Autenticação Multifator (MFA): Combina dois ou mais métodos (ex.: senha + token).
+		.2. Autorização
+			Define quais recursos o usuário pode acessar após autenticação.
+			Exemplo: Um funcionário pode acessar o banco de dados de vendas, mas não a impressora de alta velocidade.
+			Políticas comuns:
+				Baseada em grupo (ex.: apenas TI acessa servidores).
+				Baseada em hierarquia (ex.: gerentes têm mais permissões).
+		.3. Accounting (Auditoria/Rastreamento)
+			Registra e monitora atividades dos usuários para fins de auditoria e segurança.
+			O que é rastreado? Logins (sucesso/falha), acessos a recursos, alterações em sistemas.
+			Importância: Detecta atividades suspeitas, cumpre regulamentações (ex.: LGPD, GDPR).
+			Gerenciamento de Identidade Federada
+				Permite que usuários usem as mesmas credenciais em diferentes sistemas (ex.: login único - Single Sign-On).
+				Riscos: Se um sistema é comprometido, outros podem ser afetados (efeito cascata).
+				Solução: Vincular login a dispositivos autorizados e limitar dados compartilhados.

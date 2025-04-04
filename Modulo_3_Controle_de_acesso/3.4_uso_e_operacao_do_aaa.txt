@@ -1,0 +1,49 @@
+3.4.1. Conceito de AAA:
+
+	- AAA (Authentication, Authorization, Accounting) é um framework de segurança que:
+		.Autentica usuários (verifica identidade).
+		.Autoriza acesso (define permissões).
+		.Registra atividades (auditoria e conformidade).
+	- Exemplo de Uso:
+		.Um usuário tenta acessar um roteador corporativo:
+			Autenticação: Login com credenciais (usuário/senha + MFA).
+			Autorização: Permissão para executar comandos específicos (ex.: show interfaces).
+			Contabilidade: Log de todos os comandos executados e tempo de sessão.
+
+3.4.2. Autenticação AAA: Local vs. Centralizada:
+
+	Método:			Descrição:									Uso Ideal:
+	AAA Local		Credenciais armazenadas no dispositivo (ex.: roteador).				Pequenas redes.
+	AAA Centralizado	Credenciais armazenadas em servidor (ex.: RADIUS/TACACS+ + Active Directory).	Redes médias/grandes.
+	
+	- Vantagens do AAA Centralizado:
+		.✅ Escalabilidade (milhares de usuários).
+		.✅ Gerenciamento simplificado (um único servidor).
+		.✅ Integração com LDAP/Active Directory.
+
+3.4.3. Protocolos AAA: RADIUS vs. TACACS+:
+
+	Característica:		TACACS+:						RADIUS (Padrão Aberto):
+	Funcionalidade		Separa autenticação, autorização e contabilidade.	Combina autenticação/autorização.
+	Transporte		TCP (porta 49).						UDP (portas 1812/1813 ou 1645/1646).
+	Criptografia		Criptografa todo o pacote (exceto cabeçalho).		Criptografa apenas a senha.
+	Flexibilidade		Permite autorização por comando (ex.: CLI).		Limitado a autorizações genéricas.
+	Auditoria		Limitada.						Avançada (logs detalhados).
+
+	- Quando Usar:
+		.TACACS+: Redes Cisco com necessidade de controle granular (ex.: comandos CLI por usuário).
+		.RADIUS: Autenticação básica (ex.: Wi-Fi corporativo, VPN).
+
+3.4.4. Contabilidade (Accounting) AAA:
+
+	- Registra atividades para auditoria, troubleshooting e segurança:
+		.Contabilidade de Rede: Sessões PPP (bytes/pacotes transmitidos).
+		.Contabilidade de Comando: Log de comandos executados (ex.: configure terminal).
+		.Contabilidade EXEC: Tempo de sessão e IP do usuário.
+		.Contabilidade de Sistema: Eventos como reinicializações.
+
+3.4.5. Benefícios do AAA Centralizado:
+
+	- 🔹 Segurança: Reduz risco de credenciais vazadas (senhas não ficam em dispositivos locais).
+	- 🔹 Conformidade: Atende regulamentações (ex.: GDPR, LGPD) com logs centralizados.
+	- 🔹 Eficiência: Gerencia múltiplos dispositivos a partir de um único ponto.

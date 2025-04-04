@@ -1,0 +1,84 @@
+3.3.1. Tipos de Contas e Boas Práticas:
+
+	- Tipos de Contas em uma Empresa.
+		.Conta de Usuário: Acesso diário a recursos (ex.: funcionários).
+		.Conta de Serviço: Usada por sistemas/aplicações (ex.: banco de dados, APIs).
+		.Conta de Convidado: Acesso temporário (ex.: visitantes, prestadores).
+	- Boas Práticas de Gerenciamento de Contas
+		.✅ Princípio do Privilégio Mínimo: Usuários só acessam o necessário.
+		.✅ Desativar Contas Inativas: Ex-funcionários ou contas não usadas.
+		.✅ Restrições de Acesso:
+			Tempo: Horário comercial.
+			Localização: Apenas de redes autorizadas.
+			Delimitação Geográfica: Bloqueio se o acesso vier de regiões suspeitas.
+	- Contas Privilegiadas (Administrativas)
+		.Riscos: Alvo principal de cibercriminosos (acesso total aos sistemas).
+		.Proteção:
+			Autenticação Multifator (MFA).
+			Rotação de senhas (30-60 dias).
+			Log de atividades (auditoria).
+			Eliminar contas compartilhadas.
+
+3.3.2. Controle de Acesso a Arquivos:
+
+	- Níveis de Permissão (Exemplo: Windows)
+
+	Permissão:		Descrição:
+	Controle Total		Ler, editar, excluir, criar arquivos/pastas.
+	Modificar		Editar/excluir arquivos existentes, mas não criar novos.
+	Ler e Executar		Visualizar e executar programas.
+	Gravação		Criar/editar arquivos, mas não ler.
+	Leitura			Apenas visualização.
+	
+	- Herança de Permissões
+		.Pastas filhas herdam permissões da pasta pai.
+		.Movimento/Cópia entre volumes pode alterar permissões.
+
+3.3.3. Políticas de Conta no Windows:
+
+	- Política de Senhas
+		.Troca obrigatória a cada 90 dias.
+		.Mínimo de 8 caracteres (maiúsculas, minúsculas, números, símbolos).
+		.Bloqueio após 24 senhas únicas reutilizadas.
+	- Política de Bloqueio de Conta
+		.5 tentativas falhas → Bloqueio por 30 minutos.
+	- Política de Auditoria
+		.Registra eventos como:
+			Logins (sucesso/falha).
+			Alterações em arquivos.
+			Uso de privilégios administrativos.
+
+3.3.4. Gerenciamento de Autenticação:
+
+	- Métodos de Autenticação
+		.SSO (Single Sign-On): Uma senha para múltiplos sistemas.
+		.OAuth: Login via Google/Facebook (terceiros).
+		.KBA (Autenticação Baseada em Conhecimento): Perguntas de segurança para recuperação de senha.
+	- Protocolos de Autenticação:
+
+	Protocolo:	Descrição:
+	EAP		Usa certificados no servidor (ex.: Wi-Fi empresarial).
+	PAP		Senha em texto puro (pouco seguro).
+	CHAP		Hash unidirecional (mais seguro que PAP).
+	802.1X		Autenticação em redes (com RADIUS).
+	RADIUS		Autenticação centralizada (criptografa apenas a senha).
+	TACACS+		Criptografia total (melhor para redes corporativas).
+	Kerberos	Usa "tíquetes" criptografados (Windows Active Directory).
+
+3.3.5. Funções de Hash Criptográficas:
+
+	- Aplicações
+		.Verificação de integridade (ex.: downloads de software).
+		.Autenticação em IPsec e protocolos de roteamento.
+		.Certificados digitais (PKI).
+	- Algoritmos Recomendados
+		.✅ SHA-256 ou superior (evitar MD5 e SHA-1 por vulnerabilidades).
+
+3.3.6. Estratégias de Controle de Acesso:
+
+	Estratégia:				Descrição:
+	MAC (Mandatory Access Control)		Acesso baseado em níveis de segurança (ex.: militar).
+	DAC (Discretionary Access Control)	Dono do arquivo define permissões (ex.: pastas compartilhadas).
+	RBAC (Role-Based Access Control)	Acesso por função (ex.: gerente, analista).
+	ABAC (Attribute-Based Access Control)	Acesso por atributos (ex.: horário, localização).
+	Rule-Based Access Control		Regras pré-definidas (ex.: bloqueio fora do horário comercial).

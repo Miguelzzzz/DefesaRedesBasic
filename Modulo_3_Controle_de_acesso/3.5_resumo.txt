@@ -1,0 +1,75 @@
+3.5.1. Controles de Acesso:
+
+	- Tipos de Controles
+		.Físicos: Barreiras tangíveis (ex.: guardas, cartões de acesso, câmeras).
+		.Lógicos: Soluções tecnológicas (ex.: criptografia, firewalls, ACLs).
+		.Administrativos: Políticas e procedimentos (ex.: AAA, treinamentos).
+	- AAA (Autenticação, Autorização, Contabilidade)
+		.Autenticação: Verifica identidade (ex.: senha + biometria).
+		.Autorização: Define permissões (ex.: acesso apenas a pastas específicas).
+		.Contabilidade (Accounting): Registra atividades para auditoria.
+		.Exemplo: Um funcionário faz login (autenticação), acessa apenas o sistema de RH (autorização), e suas ações são registradas (contabilidade).
+
+3.5.2. Conceitos de Controle de Acesso:
+
+	- Tríade CIA
+		.Confidencialidade: Dados acessíveis apenas a autorizados.
+		.Integridade: Dados precisos e não alterados indevidamente.
+		.Disponibilidade: Sistemas acessíveis quando necessário.
+	- Zero Trust ("Nunca Confie, Sempre Verifique")
+		.Princípio: Nada é confiável por padrão — até dispositivos internos exigem autenticação.
+		.Pilares:
+			Força de trabalho: Acesso seguro de usuários.
+			Cargas de trabalho: Proteção de aplicações/APIs.
+			Local de trabalho: Segurança de dispositivos (IoT, servidores).
+	- Modelos de Controle de Acesso:
+
+	Modelo:		Descrição:						Exemplo:
+	DAC		Dono do recurso define permissões.			Pastas compartilhadas no Google Drive.
+	MAC		Acesso baseado em níveis de segurança (ex.: militar).	Documentos "Top Secret".
+	RBAC		Permissões por função (ex.: gerente, analista).		Acesso ao sistema financeiro apenas para contadores.
+	ABAC		Acesso baseado em atributos (horário, localização).	Bloqueio de acesso fora do horário comercial.
+	
+	- Ameaça Comum: Escalação de privilégios (invasores ganham acesso elevado).
+
+3.5.3. Gerenciamento de Contas:
+
+	- Tipos de Contas
+		.Administrador: Acesso total (alvo principal de ataques).
+		.Usuário: Acesso diário.
+		.Serviço: Usada por aplicações (ex.: banco de dados).
+		.Convidado: Acesso temporário.
+	- Boas Práticas
+		.✅ Princípio do Privilégio Mínimo: Usuários só acessam o necessário.
+		.✅ Desativar contas inativas (ex.: funcionários desligados).
+		.✅ Autenticação Multifator (MFA): Senha + token/biometria.
+	- Protocolos de Autenticação:
+
+	Protocolo:	Uso:
+	RADIUS		Autenticação básica (Wi-Fi/VPN).
+	TACACS+		Controle granular (comandos CLI em redes Cisco).
+	Kerberos	Logins únicos (Windows Active Directory).
+
+	- Exemplo de HMAC: Autenticação em APIs usando chaves criptográficas.
+
+3.5.4. Operação AAA:
+
+	- Autenticação Centralizada vs. Local:
+
+	Tipo:					Vantagem:				Uso:
+	Centralizada (RADIUS/TACACS+)		Escalável, integra com LDAP/AD.		Redes grandes.
+	Local					Simples, sem dependência de servidor.	Pequenas redes.
+
+	- Contabilidade (Accounting)
+		.Registra:
+			Sessões de usuário (login/logoff).
+			Comandos executados (ex.: configure terminal).
+			Tráfego de rede (bytes transmitidos).
+		.Caso de Uso: Investigar um incidente de segurança rastreando ações de um usuário comprometido.
+
+3.5.5. Conclusão e Próximos Passos:
+
+	- Principais Aprendizados
+		.🔹 AAA é a base para segurança de acesso em redes.
+		.🔹 Zero Trust reduz riscos ao eliminar confiança implícita.
+		.🔹 Gerenciamento de contas previne violações (ex.: privilégio mínimo).
