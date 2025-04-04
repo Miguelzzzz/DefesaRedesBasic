@@ -1,0 +1,75 @@
+7.2.1 Domínios da Segurança da Nuvem (Cloud Security Alliance - CSA):
+
+	- O Guia de Segurança para Áreas de Foco Essenciais na Computação em Nuvem v4 da Cloud Security Alliance (CSA) define 14 domínios críticos para garantir a segurança em ambientes de nuvem. Abaixo, um resumo estruturado:
+	
+	- 1. Conceitos e Arquiteturas de Computação em Nuvem
+		Objetivo: Estabelecer terminologia e estruturas lógicas/arquitetônicas.
+		Foco: Modelos de serviço (SaaS, PaaS, IaaS) e implantação (pública, privada, híbrida).
+	- 2. Governança e Gerenciamento de Riscos Corporativos
+		.Áreas-chave:
+			Governança de TI.
+			Gerenciamento de riscos empresariais e de informações.
+			Segurança da informação.
+	- 3. Questões Jurídicas, Contratos e Descoberta Eletrônica
+		.Tópicos:
+			Conformidade com leis de proteção de dados (ex.: LGPD, GDPR).
+			Cláusulas contratuais com provedores de nuvem.
+			Gerenciamento de dados em litígios.
+	- 4. Gerenciamento de Conformidade e Auditoria
+		.Desafios:
+			Medir conformidade em migrações para a nuvem.
+			Auditorias em ambientes multitenancy (compartilhados).
+	- 5. Governança da Informação
+		.Princípio: Alinhar uso de dados com políticas empresariais e regulatórias.
+		.Exemplo: Classificação de dados (públicos, confidenciais, restritos).
+	- 6. Plano de Gerenciamento e Continuidade dos Negócios
+		.Criticalidade:
+			Protocolos de recuperação de desastres (DRP).
+			Acordos de nível de serviço (SLAs) com provedores.
+	- 7. Segurança como Serviço (SecaaS)
+		.Soluções:
+			Firewall como serviço (FWaaS).
+			Detecção de intrusão (IDS) baseado em nuvem.
+	- 8. Segurança de Infraestrutura
+		.Proteção:
+			Redes, armazenamento e servidores virtuais.
+			Hardening de sistemas em nuvem.
+	- 9. Virtualização e Contêineres
+		.Riscos:
+			Fuga de VM, hyperjacking.
+			Isolamento de contêineres (ex.: Docker, Kubernetes).
+	- 10. Resposta a Incidentes (IR)
+		.Ciclo de Vida:
+			Preparação → Detecção → Contenção → Erradicação → Recuperação.
+			Coordenação com provedores em ataques à nuvem.
+	- 11. Segurança de Aplicações
+		.Boas Práticas:
+			DevSecOps para PaaS/IaaS.
+			Scans de vulnerabilidades em APIs.
+	- 12. Segurança e Criptografia de Dados
+		.Estratégia:
+			Criptografia em repouso (AES-256) e em trânsito (TLS).
+			Gerenciamento de chaves (HSM, KMS).
+	- 13. Gerenciamento de Identidade e Acesso (IAM)
+		.Diferenças na Nuvem:
+			Autenticação multifator (MFA).
+			Federação de identidade (SAML, OAuth).
+	- 14. Tecnologias Relacionadas
+		.Exemplos:
+			IoT na nuvem.
+			Serverless computing (ex.: AWS Lambda).
+
+	- Resumo dos Pilares da Segurança em Nuvem:
+	
+	Domínio:		Foco Principal:			Exemplo de Controle:
+	Governança		Políticas e conformidade.	SLAs com provedores.
+	Proteção de Dados	Criptografia e classificação.	AWS KMS, Azure Key Vault.
+	Resposta a Incidentes	Plano de ação para breaches.	SIEM integrado (ex.: Splunk Cloud).
+	IAM			Controle de acesso granular.	RBAC (Role-Based Access Control).
+
+	- Por Que Esses Domínios São Importantes?
+		.Para Clientes: Garantir que dados na nuvem estejam protegidos e em conformidade.
+		.Para Provedores: Oferecer infraestrutura segura e transparente (shared responsibility model).
+	- Ferramentas Recomendadas:
+		.Monitoramento: AWS GuardDuty, Azure Security Center.
+		.Criptografia: Google Cloud HSM, IBM Cloud Hyper Protect Crypto.

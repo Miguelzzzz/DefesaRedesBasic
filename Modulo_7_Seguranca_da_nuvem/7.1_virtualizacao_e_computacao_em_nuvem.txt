@@ -1,0 +1,71 @@
+7.1.1 O Ambiente Virtual:
+
+	- A virtualização reduz a necessidade de hardware físico, permitindo que múltiplos sistemas operacionais (SOs) ou aplicações rodem em uma única máquina.
+
+	- Componentes Principais:
+		.Máquinas Virtuais (VMs)
+			Hypervisor (Tipo 1 - Bare Metal): Executa diretamente no hardware (ex.: VMware ESXi, Hyper-V).
+			Hypervisor (Tipo 2 - Hospedado): Roda sobre um SO host (ex.: VirtualBox, VMware Workstation).
+			Riscos: Comprometimento de uma VM pode afetar o host.
+		.Contêineres
+			Leves (só incluem app + dependências), usando virtualização a nível de SO (ex.: Docker, Kubernetes).
+			Vantagem: Portabilidade e eficiência.
+			Risco: Privilégios elevados no contêiner podem comprometer o SO host.
+		.Infraestrutura de Desktops Virtuais (VDI)
+			Desktops remotos armazenados em servidores (ex.: thin clients).
+			Benefício: Facilidade de gerenciamento e escalabilidade.
+
+7.1.2 Riscos em Ambientes Virtuais:
+
+	- Expansão de VMs: Servidores subutilizados consomem recursos desnecessários.
+	- Fuga de VM: Uma VM comprometida pode interagir maliciosamente com o host.
+
+7.1.3 Tecnologias na Nuvem (XaaS):
+
+	Modelo:	  Descrição:									Exemplos:
+	SaaS	  Software acessado via navegador (gerenciado pelo provedor).			Google Workspace, Salesforce
+	PaaS	  Plataforma para desenvolvimento de apps (sem gerenciar infraestrutura).	Heroku, AWS Elastic Beanstalk
+	IaaS	  Infraestrutura virtualizada (servidores, armazenamento).			AWS EC2, Azure VMs
+
+7.1.4 Tipos de Nuvem:
+
+	Tipo:		Características:								Custo:
+	Pública		Hospedada por terceiros (ex.: AWS, Azure). Menor controle, menor custo.		Baixo
+	Privada		Infraestrutura dedicada (mais controle, maior custo).				Alto
+	Híbrida		Combina nuvem pública e privada (flexibilidade).				Moderado
+	Comunidade	Compartilhada por organizações do mesmo setor (ex.: saúde).			Variável
+
+7.1.5 Fog e Edge Computing:
+
+	- Fog Computing: Processamento em gateways locais (ex.: IoT industrial).
+	- Edge Computing: Processamento no próprio dispositivo (ex.: câmeras inteligentes).
+	- Benefício: Reduz latência (crítico para veículos autônomos, manufatura).
+
+7.1.6 Principais Ameaças à Nuvem:
+
+	- Violação de Dados
+		.Acesso não autorizado a informações sensíveis.
+	- Configuração Incorreta
+		.Recursos expostos por erro humano (ex.: buckets S3 públicos).
+	- Arquitetura de Segurança Frágil
+		.Falta de clareza na responsabilidade (provedor vs. cliente).
+	- Credenciais Comprometidas
+		.Contas com privilégios elevados são alvos (ex.: contas de serviço).
+	- Ameaças Internas
+		.Funcionários ou parceiros mal-intencionados.
+	- APIs/UI Inseguras
+		.Pontos de entrada para ataques (ex.: APIs não autenticadas).
+	- Visibilidade Limitada
+		.Dificuldade em monitorar arquivos maliciosos na nuvem.
+
+	- Resumo de Mitigação
+		.✅ Para VMs/Contêineres:
+			Atualizar sistemas e limitar privilégios.
+			Isolar VMs críticas.
+		.✅ Para Nuvem:
+			Usar MFA e criptografia.
+			Auditorias regulares de configuração.
+			Adotar modelo Shared Responsibility (responsabilidade compartilhada).
+		.✅ Para Fog/Edge:
+			Proteger dispositivos IoT com firewalls e autenticação forte.
+			Impacto: A virtualização e a nuvem trazem eficiência, mas exigem estratégias robustas de segurança para evitar brechas. 

@@ -1,0 +1,58 @@
+7.7.1. Virtualização e Computação em Nuvem:]
+
+	- Hypervisors:
+		.Tipo 1 (Bare Metal): Executa diretamente no hardware (ex.: VMware ESXi).
+		.Tipo 2 (Hospedado): Roda sobre um SO host (ex.: VirtualBox).
+	- Modelos de Serviço em Nuvem:
+		.SaaS: Software como serviço (ex.: Google Workspace).
+		.PaaS: Plataforma como serviço (ex.: Heroku).
+		.IaaS: Infraestrutura como serviço (ex.: AWS EC2).
+	- Tipos de Nuvem:
+		.Pública, Privada, Híbrida, Comunitária.
+	- Ameaças Comuns:
+		.Vazamento de dados, configurações incorretas, credenciais comprometidas.
+
+7.7.2. Domínios de Segurança em Nuvem (CSA v4):
+
+	- 14 domínios críticos, incluindo:
+		.Governança de Dados (classificação, criptografia).
+		.Gerenciamento de Identidade (IAM).
+		.Segurança de Aplicações (DevSecOps).
+		.Resposta a Incidentes.
+
+7.7.3. Segurança de Infraestrutura em Nuvem:
+
+	- Responsabilidade Compartilhada:
+		.Cliente: Dados, aplicações, acesso.
+		.Provedor (CSP): Hardware, rede física.
+	- Estratégias:
+		.Microssegmentação: Isolamento lógico de redes.
+		.Defesa em Profundidade: Camadas de hardware, plataforma, aplicação.
+
+7.7.4. Segurança de Aplicações em Nuvem:
+
+	- Técnicas de Codificação Segura:
+		.Validação de Entrada: Regras de tamanho, formato, intervalo.
+		.Procedimentos Armazenados: Evita SQL Injection.
+		.Ofuscação: Protege contra engenharia reversa.
+	- Integridade de Dados:
+		.Checksums e Funções Hash (SHA-256).
+
+7.7.5. Segurança de Dados na Nuvem:
+
+	- Estados dos Dados:
+		.Em Repouso: Criptografia (AES-256).
+		.Em Trânsito: TLS/SSL.
+		.Em Processamento: Enclaves seguros (ex.: Intel SGX).
+	- Algoritmos:
+		.Criptografia Simétrica: AES (rápido, para grandes volumes).
+		.Assimétrica: RSA (troca de chaves, HTTPS).
+
+7.7.6. Proteção de Máquinas Virtuais (VMs):
+
+	- Boas Práticas:
+		.Sub-redes Isoladas: Limite acesso à Internet.
+		.Hardening: Desative portas e contas padrão.
+		.Monitoramento: Detecção de VMs órfãs.
+	- Riscos:
+		.Expansão de VMs (VM Sprawl): VMs não gerenciadas = vulnerabilidades.

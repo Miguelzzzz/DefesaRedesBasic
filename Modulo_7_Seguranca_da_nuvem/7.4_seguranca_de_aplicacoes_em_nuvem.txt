@@ -1,0 +1,60 @@
+7.4.1 Ciclo de Vida Seguro do Desenvolvimento (SDLC):
+
+	- Desenvolvimento e Teste
+		.Ambiente de Desenvolvimento: Menos restritivo, usado para codificação e depuração.
+		.Controle de Versão: Ferramentas como Git rastreiam alterações no código.
+		.Sandboxing: Ambientes isolados para testes sem afetar a produção.
+		.QA (Garantia de Qualidade): Identifica falhas antes da implantação.
+	- Preparo (Staging)
+		.Réplica do ambiente de produção para validar segurança e funcionalidade.
+		.Testes de segurança: Scans de vulnerabilidades (ex.: OWASP ZAP).
+	- Produção
+		.Implantação após aprovação em staging.
+		.Monitoramento contínuo (ex.: SIEM, logs de aplicação).
+	- Provisionamento/Desprovisionamento
+		.Provisionamento: Criação/atualização automatizada de recursos (ex.: Terraform).
+		.Desprovisionamento: Remoção segura de recursos não utilizados para reduzir superfície de ataque.
+
+7.4.2 Técnicas de Codificação Segura:
+
+	Técnica:			Descrição:									Exemplo:
+	Normalização			Organiza dados em bancos de dados para evitar redundâncias e SQL Injection.	Formatar entradas em UTF-8.
+	Procedimentos Armazenados	Executa SQL pré-compilado para reduzir injeções.				CREATE PROCEDURE validar_login(...)
+	Ofuscação/Camuflagem		Protege código contra engenharia reversa.					Substituir variáveis por aleatórias.
+	Reutilização de Código		Usa bibliotecas validadas, mas evita dependências vulneráveis.			Log4j (risco se não atualizado).
+	SDKs Seguros			Kits de desenvolvimento com controles de segurança integrados.			AWS SDK com encriptação padrão.
+
+7.4.3 Validação de Entrada:
+
+	- Ameaças: SQL Injection, XSS, manipulação de URLs (ex.: ataques a newsletters).
+	- Regras de Validação:
+		.Tamanho: Limitar caracteres em campos.
+		.Formato: Validar emails (ex.: ^\w+@\w+\.\w+$).
+		.Intervalo: Checar valores mínimos/máximos (ex.: idade ≥ 18).
+		.Dígito Verificador: ISBN, CPF.
+		.Exemplo de Checksum (ISBN):
+			ISBN: 1-5-8-7-1-4-3-7-3  
+			Cálculo: (1×10) + (5×9) + (8×8) + ... + (3×2) = 233  
+			Dígito: 11 - (233 % 11) = 1 → ISBN válido: 1-5-8-7-1-4-3-7-3-1  
+
+7.4.4 Verificação de Integridade:
+
+	Método:			Função:						Ferramentas:
+	Checksum		Soma simples para detectar alterações.		md5sum, sha1sum.
+	Funções Hash		Algoritmos criptográficos (SHA-256, SHA-512).	OpenSSL, HashCalc.
+	Controle de Versão	Evita conflitos em edições simultâneas.		Git, SVN.
+	Backups			Cópias seguras para recuperação de dados.	AWS S3, BorgBackup.
+	Autorização		Controle de acesso baseado em roles (RBAC).	IAM (AWS), Active Directory.
+
+7.4.5 Outras Práticas de Segurança:
+
+	- Assinatura de Código
+		.Verifica autenticidade e integridade de softwares.
+		.Exemplo: Certificados digitais em executáveis (.exe, .dmg).
+	- Cookies Seguros
+		.Atributos:
+			Secure: Só transmite via HTTPS.
+			HttpOnly: Bloqueia acesso via JavaScript.
+			SameSite: Prevenção contra CSRF.
+	- HTTPS Obrigatório
+		.Criptografa dados em trânsito (TLS 1.2+).

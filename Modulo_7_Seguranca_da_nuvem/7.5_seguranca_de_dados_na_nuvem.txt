@@ -1,0 +1,70 @@
+7.5.1 Estados dos Dados:
+
+	- Os dados existem em três estados, cada um exigindo controles de segurança específicos:
+
+	Estado:			Descrição:						Proteções Típicas:
+	Dados em Repouso	Armazenados em discos, bancos de dados ou nuvem.	Criptografia (AES-256), RBAC, backups.
+	Dados em Trânsito	Sendo transmitidos (ex.: rede, Internet).		TLS/SSL, VPNs, HTTPS.
+	Dados em Processamento	Em uso ativo (ex.: memória RAM, CPU).			Enclaves seguros (SGX), sandboxing.
+
+7.5.2 Criptografia:
+
+	- Objetivo: Proteger a confidencialidade dos dados.
+	- Tipos de Criptografia
+
+	Tipo:		Como Funciona:					Exemplos:			Casos de Uso:
+	Simétrica	Mesma chave para criptografar/descriptografar.	AES (128/192/256 bits), 3DES.	Criptografia de disco (BitLocker).
+	Assimétrica	Chave pública (cripto) + privada (decripto).	RSA, ECC, Diffie-Hellman.	SSL/TLS, assinaturas digitais.
+
+	- Exemplo Prático:
+		.AES-256: Usado pelo governo dos EUA para dados confidenciais.
+		.RSA: Protege comunicações HTTPS (chaves geralmente de 2048 ou 4096 bits).
+
+7.5.3 Hashing:
+
+	- Objetivo: Garantir a integridade dos dados (não reversível).
+	- Propriedades de Funções Hash
+		.Saída de Tamanho Fixo (ex.: SHA-256 → 256 bits).
+		.Unidirecional (não pode ser revertido).
+		.Resistência a Colisões (diferentes entradas não geram o mesmo hash).
+	- Algoritmos Hash:
+
+	Algoritmo:	Tamanho do Hash:	Segurança:
+	MD5		128 bits		❌ Vulnerável (não use).
+	SHA-1		160 bits		❌ Obsoleto.
+	SHA-2		224 a 512 bits		✅ Recomendado (SHA-256).
+	SHA-3		Até 512 bits		✅ Futuro-proof.
+
+	- Exemplo de Uso:
+
+		# Gerando um hash SHA-256 em Python
+		import hashlib
+		hash_object = hashlib.sha256(b"dados_confidenciais")
+		print(hash_object.hexdigest())  # Saída: 3a7b3e...
+
+	- Comparativo: Criptografia vs. Hashing
+
+	Característica:	Criptografia:			Hashing:
+	Objetivo	Confidencialidade.		Integridade.
+	Reversível?	Sim (com chave).		Não.
+	Uso Comum	Proteger dados sensíveis.	Verificar senhas, checksums.
+	Exemplos	AES, RSA.			SHA-256, MD5 (não seguro).
+
+	- Boas Práticas
+		.Para Dados em Repouso:
+			Use AES-256 para criptografia.
+			Armazene chaves em HSMs (Hardware Security Modules).
+		.Para Dados em Trânsito:
+			Adote TLS 1.3 (evite SSL/TLS 1.0).
+			Implemente certificados DV/OV/EV para HTTPS.
+		.Para Hashing:
+			Prefira SHA-256 ou SHA-3 para senhas (com salting).
+			Evite MD5/SHA-1 (vulneráveis a colisões).
+
+	- Cenários de Ataque e Mitigação
+		.Ataque à Criptografia:
+			Força Bruta em AES: Improvável (256 bits = 2²⁵⁶ combinações).
+			Mitigação: Rotacione chaves periodicamente.
+		.Ataque ao Hash:
+			Rainbow Tables: Use salting (ex.: hash(senha + salt)).
+			Mitigação: Adote algoritmos lentos (ex.: PBKDF2, bcrypt).

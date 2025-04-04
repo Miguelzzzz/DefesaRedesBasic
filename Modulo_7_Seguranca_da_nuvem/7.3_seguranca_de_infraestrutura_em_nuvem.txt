@@ -1,0 +1,62 @@
+7.3.1 Componentes e Desafios:
+
+	- A infraestrutura de nuvem é composta por:
+		.Camada física: Hardware (servidores, redes, armazenamento) gerenciado pelo provedor (CSP).
+		.Camada virtual: Recursos alocados ao cliente (VMs, redes virtuais, contêineres).
+	- Desafios:
+		.Controles tradicionais (ex.: firewalls físicos) não se aplicam.
+		.Soluções modernas:
+			Dispositivos virtuais de segurança (ex.: firewalls virtuais).
+			Redes Definidas por Software (SDN):
+				Isolamento lógico de redes sem hardware dedicado.
+				Grupos de segurança (ex.: AWS Security Groups, NSGs no Azure).
+
+7.3.2 Modelo de Responsabilidade Compartilhada:
+
+	- A segurança na nuvem é uma responsabilidade dividida entre cliente e provedor, variando por modelo de serviço:
+
+	Responsabilidade:		On-Premises:	IaaS:	  	PaaS:	 	SaaS:
+	Dados				Cliente		Cliente	  	Cliente		Cliente
+	Endpoints			Cliente		Cliente		Cliente		Compartilhado
+	Gerenciamento de Identidade	Cliente		Cliente		Compartilhado	Compartilhado
+	Aplicações			Cliente		Cliente		Compartilhado	CSP
+	Controle de Rede		Cliente		Cliente		CSP		CSP
+	Infraestrutura Física		Cliente		CSP		CSP		CSP
+
+	- Exemplos Práticos:
+		.IaaS (AWS EC2): Cliente gerencia OS, aplicações e firewalls; AWS cuida do hardware.
+		.SaaS (Google Workspace): Provedor gerencia tudo, exceto dados e acesso do usuário.
+
+7.3.3 Considerações Adicionais de Segurança:
+
+	- 1. Políticas de Segurança da Empresa
+		.Shadow IT: Aplicativos não autorizados (ex.: ferramentas de produtividade) podem criar vulnerabilidades.
+		.Mitigação:
+			Políticas claras de uso de software.
+			Ferramentas de monitoramento (ex.: CASB - Cloud Access Security Broker).
+	- 2. Segurança em Camadas (Defesa em Profundidade)
+		.Camadas a proteger:
+
+		Camada:		Controles Típicos:
+		Hardware	Proteção física (CSP).
+		Infraestrutura	Firewalls virtuais, logs de fluxo.
+		Plataforma	IAM, autenticação MFA.
+		Aplicações	Scans de vulnerabilidades, WAF.
+
+	- Ferramentas:
+		.VPNs: Para acesso seguro a recursos em nuvem.
+		.Logs de Fluxo: Monitoramento de tráfego (ex.: AWS VPC Flow Logs).
+	- 3. Microssegmentação
+		.Conceito: Divisão de redes virtuais em sub-redes isoladas para segurança granular.
+		.Vantagens:
+			Limita movimentação lateral em caso de breach.
+			Reduz custos (sem hardware adicional).
+		.Exemplo: Isolar ambientes de produção e desenvolvimento em VPCs separadas.
+
+		.Ferramentas Recomendadas por Domínio
+
+		Domínio:		Ferramentas/Serviços:
+		IAM			AWS IAM, Azure Active Directory.
+		Proteção de Dados	AWS KMS, Azure Key Vault.
+		Monitoramento		AWS GuardDuty, Azure Security Center.
+		Firewalls Virtuais	AWS Security Groups, Azure NSGs.

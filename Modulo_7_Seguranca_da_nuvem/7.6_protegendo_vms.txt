@@ -1,0 +1,76 @@
+7.6.1 Proteção de Máquinas Virtuais (VMs) na Nuvem:
+
+	- As máquinas virtuais (VMs) são alvos comuns de ataques se não forem configuradas corretamente. Veja as melhores práticas para protegê-las:
+	- 1. Posicionamento Estratégico de Sub-redes
+		.Objetivo: Limitar a exposição da VM à Internet.
+		.Ações:
+			Coloque VMs críticas em sub-redes privadas (sem acesso direto à Internet).
+			Use NAT Gateways ou Load Balancers para tráfego de saída controlado.
+			Exemplo (AWS):
+				# Sub-rede pública (apenas para Load Balancer)
+				# Sub-rede privada (para VMs de banco de dados)
+	- 2. Desative Serviços e Portas Desnecessários
+		.Riscos: Portas abertas (ex.: SSH 22, RDP 3389) são vetores de ataque.
+		.Soluções:
+			Use Security Groups (AWS) ou NSGs (Azure) para filtrar tráfego.
+			Feche portas não essenciais (ex.: Telnet 23).
+			Exemplo:
+				# Permitir apenas HTTPS (443) e SSH (22) de IPs específicos
+	- 3. Gerenciamento de Contas e Políticas
+		.Problema: Contas padrão (ex.: admin, root) são alvos fáceis.
+		.Boas Práticas:
+			Desative contas padrão.
+			Use IAM (Identity and Access Management) para controle de acesso.
+			Implemente MFA (Autenticação Multifator).
+			Aplique o princípio do menor privilégio.
+	- 4. Antivírus/Antimalware
+		.Soluções:
+			Nativo: Windows Defender (Windows), ClamAV (Linux).
+			Em Nuvem: AWS GuardDuty, Azure Defender.
+	- 5. Firewall e IDS/IPS
+		.Firewall de Host: Configurar regras no SO (ex.: iptables no Linux).
+		.IDS/IPS Baseado em Nuvem:
+			AWS: Network Firewall + GuardDuty.
+			Azure: Azure Firewall + Microsoft Defender for Cloud.
+
+7.6.2 Prevenção contra Ataques de Propagação de VMs:
+
+	- A expansão descontrolada de VMs (VM Sprawl) cria riscos:
+		.VMs órfãs (não gerenciadas) podem ser exploradas.
+		.Consumo desnecessário de recursos (custos elevados).
+	- Estratégias de Mitigação
+		.Inventário e Auditoria
+			Use ferramentas como AWS Config ou Azure Policy para rastrear VMs ativas.
+			Exemplo (AWS CLI):
+				aws ec2 describe-instances --query "Reservations[*].Instances[*].InstanceId"
+		.Automação de Ciclo de Vida
+			Desligamento Automático: Desative VMs não usadas após um período.
+			Templates Padronizados: Use AMIs (AWS) ou Imagens Personalizadas (Azure) para garantir configurações seguras.
+		.Monitoramento Contínuo
+			Alertas para VMs com:
+				Patchs desatualizados.
+				Tráfego anômalo (ex.: conexões SSH de IPs suspeitos).
+			Ferramentas: CloudWatch (AWS), Azure Monitor.
+		.Governança de Custos
+			Tags: Identifique VMs por projeto/departamento.
+			Orçamentos: Configure alertas para gastos inesperados.
+
+	- Comparativo: Soluções de Segurança por Provedor
+
+	Controle:		AWS:			Azure:				Google Cloud:
+	Firewall		Security Groups, NACLs	NSGs (Network Security Groups)	Firewall Rules (VPC)
+	Monitoramento		GuardDuty, CloudTrail	Microsoft Defender for Cloud	Security Command Center
+	IDS/IPS			Network Firewall	Azure Firewall Premium		Cloud IDS
+	Gerenciamento de VMs	Systems Manager		Azure Automation		Compute Engine API
+
+	- Checklist de Segurança para VMs
+		.✅ Posicione VMs em sub-redes privadas quando possível.
+		.✅ Restrinja portas acessíveis (apenas o essencial).
+		.✅ Remova contas padrão e implemente MFA.
+		.✅ Atualize patches automaticamente (ex.: AWS Systems Manager Patch Manager).
+		.✅ Monitore VMs órfãs e desative-as se não forem usadas.
+		.✅ Use ferramentas nativas do provedor para detecção de ameaças.
+	- Impacto: Reduz vulnerabilidades como exploração de portas abertas, ataques de força bruta e vazamento de dados.
+	- Exemplo de Comando para Listar VMs Não Utilizadas (AWS)
+		aws ec2 describe-instances --query "Reservations[*].Instances[?State.Name=='running'].[InstanceId,LaunchTime]" --output text
+	- Saída: Lista de VMs ativas com data de criação — identifique as não usadas.
