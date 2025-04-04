@@ -1,0 +1,61 @@
+6.2.1 Ações do ZPF (Zone-Based Policy Firewall):
+
+	- O ZPF define três ações principais para processar tráfego entre zonas:
+
+	Ação:	  Descrição:										Equivalente em ACL:
+	Inspect	  Inspeção stateful (rastreia o estado da conexão). 					N/A (mais avançado que ACLs).
+	Drop	  Bloqueia o tráfego (como deny em ACLs). Opção log registra pacotes bloqueados.	deny
+	Pass	  Permite o tráfego sem rastreamento de estado (stateless).				permit
+
+6.2.2 Regras para Tráfego de Trânsito:
+
+	- Tráfego que passa entre zonas. O comportamento depende da associação às zonas e das políticas configuradas:
+	- Tabela de Decisão para Tráfego entre Zonas
+
+	Interface de Origem na Zona?	Interface de Destino na Zona?	Par de Zonas Existe?	Política Existe?	Resultado:
+	NÃO				NÃO				N/A			N/A			PASS (Permitido)
+	SIM				NÃO				N/A			N/A			DROP (Bloqueado)
+	NÃO				SIM				N/A			N/A			DROP (Bloqueado)
+	SIM (Zona A)			SIM (Zona A)			N/A			N/A			PASS (Permitido, mesmo zona)
+	SIM (Zona A)			SIM (Zona B)			NÃO			N/A			DROP (Bloqueado)
+	SIM (Zona A)			SIM (Zona B)			SIM			NÃO			PASS (Permitido)
+	SIM (Zona A)			SIM (Zona B)			SIM			SIM			INSPECT/DROP/PASS (conforme política)
+
+	- Pontos-Chave:
+		.Tráfego intra-zona (mesma zona) é permitido por padrão.
+		.Tráfego inter-zonas é bloqueado, a menos que uma política de par de zonas exista.
+		.Políticas são unidirecionais (ex.: Zona A → Zona B ≠ Zona B → Zona A).
+
+6.2.3 Regras para Tráfego da Zona "Self" (Roteador):
+
+	- A Zona Self representa o próprio roteador (gerenciamento SSH, protocolos de roteamento como OSPF, etc.).
+	- Tabela de Decisão para Tráfego da Zona Self
+
+	Interface de Origem	Interface de Destino	Par de Zonas Existe?	Política Existe?	Resultado:
+	Zona Self		Qualquer Zona		NÃO			N/A			PASS (Permitido)
+	Zona Self		Qualquer Zona		SIM			NÃO			PASS (Permitido)
+	Zona Self		Qualquer Zona		SIM			SIM			INSPECT (conforme política)
+	Qualquer Zona		Zona Self		NÃO			N/A			PASS (Permitido)
+	Qualquer Zona		Zona Self		SIM			NÃO			PASS (Permitido)
+	Qualquer Zona		Zona Self		SIM			SIM			INSPECT (conforme política)
+	
+	- Pontos-Chave:
+		.Tráfego de/para o roteador (Zona Self) é permitido por padrão (ex.: SSH, SNMP, OSPF).
+		.Se uma política de par de zonas for criada (ex.: Self ↔ Pública), ela substitui a permissão padrão.
+	- Resumo do Comportamento do ZPF
+		.Tráfego na Mesma Zona: Sempre permitido.
+		.Tráfego entre Zonas Diferentes: Bloqueado, a menos que uma política exista.
+		.Zona Self: Permite tráfego de gerenciamento/protocolos por padrão.
+		.Políticas Unidirecionais: Devem ser configuradas para cada direção (ex.: LAN → Internet ≠ Internet → LAN).
+	- Exemplo Prático
+		.Cenário: Permitir que a LAN (Zona Privada) acesse a Internet (Zona Pública) via HTTP.
+		.Configuração:
+			zone-pair security LAN-para-Internet source Privada destination Publica
+ 			service-policy HTTP-Policy
+			Ação: Inspect (rastreia conexões) ou Pass (sem rastreamento).
+
+	- Melhores Práticas
+		.Negar por Padrão: Bloqueie todo tráfego inter-zonas inicialmente.
+		.Permitir Exceções: Crie políticas apenas para tráfego necessário.
+		.Log de Bloqueios: Use drop log para monitorar acessos não autorizados.
+		.Proteja a Zona Self: Restrinja tráfego de gerenciamento (ex.: apenas SSH de uma zona confiável).

@@ -1,0 +1,85 @@
+6.4.1 Visão Geral do Zone-Based Policy Firewall (ZPF):
+
+	- O ZPF é uma evolução do firewall tradicional do Cisco IOS, substituindo métodos antigos (como ACLs) por uma abordagem baseada em zonas, oferecendo:
+		.✔ Flexibilidade: Agrupa interfaces em zonas lógicas (ex.: LAN, DMZ, WAN).
+		.✔ Segurança aprimorada: Políticas unidirecionais entre zonas.
+		.✔ Simplicidade: Configuração estruturada usando class-maps e policy-maps.
+	- Operação do ZPF
+		.O ZPF age sobre o tráfego entre zonas com três ações principais:
+
+		Ação:		Descrição:
+		Inspect		Inspeção stateful (rastreia conexões e permite tráfego de retorno).
+		Drop		Bloqueia o tráfego (opcionalmente registra tentativas com log).
+		Pass		Permite o tráfego sem rastreamento (útil para protocolos como IPsec).
+
+	- Regras Padrão:
+		.Intra-zona: Tráfego na mesma zona é permitido.
+		.Inter-zonas: Tráfego entre zonas é bloqueado, a menos que uma política exista.
+		.Zona Self (Auto): Gerencia tráfego do roteador (SSH, OSPF, etc.).
+
+	- Configuração do ZPF (5 Etapas)
+		.Criar Zonas de Segurança
+			zone security PRIVATE
+			zone security PUBLIC
+		.Identificar Tráfego com Class-Map
+			class-map type inspect match-any HTTP-TRAFFIC
+ 			match protocol http
+ 			match protocol https
+		.Definir Ações com Policy-Map
+			policy-map type inspect LAN-TO-WAN
+ 			class HTTP-TRAFFIC
+  			inspect  # Permite e rastreia conexões
+ 			class class-default
+ 			 drop     # Bloqueia todo o resto
+		.Criar Zone-Pair e Associar Política
+			zone-pair security PRIV-PUB source PRIVATE destination PUBLIC
+ 			service-policy type inspect LAN-TO-WAN
+		.Atribuir Zonas às Interfaces
+			interface GigabitEthernet0/0
+			 zone-member security PRIVATE
+			interface Serial0/0/0
+ 			zone-member security PUBLIC
+		
+	- Verificação e Comandos Úteis
+
+	Comando:							Função:
+	show zone security					Lista zonas e interfaces associadas.
+	show zone-pair security					Exibe pares de zonas e políticas aplicadas.
+	show policy-map type inspect zone-pair sessions		Mostra sessões ativas.
+
+	- Exemplo Prático
+		.Cenário: Permitir apenas HTTP/HTTPS da LAN (PRIVATE) para a Internet (PUBLIC).
+			! Etapa 1: Criar zonas
+			zone security PRIVATE
+			zone security PUBLIC
+
+			! Etapa 2: Classificar tráfego
+			class-map type inspect match-any WEB-TRAFFIC
+ 			match protocol http
+ 			match protocol https
+
+			! Etapa 3: Definir política
+			policy-map type inspect LAN-TO-WAN
+ 			class WEB-TRAFFIC
+  			inspect
+ 			class class-default
+  			drop
+
+			! Etapa 4: Aplicar política
+			zone-pair security PRIV-PUB source PRIVATE destination PUBLIC
+			 service-policy type inspect LAN-TO-WAN
+
+			! Etapa 5: Atribuir zonas
+			interface Gig0/0
+ 			zone-member security PRIVATE
+			interface Serial0/0/0
+			zone-member security PUBLIC
+
+	- Resultado:
+		.✅ HTTP/HTTPS é permitido com inspeção stateful.
+		.❌ Todo outro tráfego é bloqueado.
+
+	- Considerações Finais
+		.Zona Self: Gerencia tráfego do roteador (não afeta políticas entre zonas).
+		.Não misture ZPF e Firewall Clássico na mesma interface.
+		.Use inspect para aplicações web (HTTP/HTTPS) e pass para protocolos seguros (IPsec).

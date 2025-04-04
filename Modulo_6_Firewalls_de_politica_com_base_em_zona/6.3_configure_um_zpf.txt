@@ -1,0 +1,109 @@
+6.3.1 Configuração do Zone-Based Policy Firewall (ZPF):
+
+	- O Zone-Based Policy Firewall (ZPF) é um método avançado de filtragem de tráfego que substitui as ACLs tradicionais, oferecendo maior controle e segurança.
+	- Passo a Passo para Configurar o ZPF
+		.1. Criar as Zonas de Segurança
+			Define-se zonas lógicas para agrupar interfaces com requisitos de segurança semelhantes.
+				Router(config)# zone security PRIVATE
+				Router(config-sec-zone)# exit
+				Router(config)# zone security PUBLIC
+				Router(config-sec-zone)# exit
+			Exemplo de Topologia:
+				Zona PRIVATE: Rede interna (confiável).
+				Zona PUBLIC: Internet (não confiável).
+
+		.2. Identificar o Tráfego com um Class-Map
+			Cria-se um class-map para classificar o tráfego (HTTP, HTTPS, DNS, etc.).
+				Router(config)# class-map type inspect match-any HTTP-TRAFFIC
+				Router(config-cmap)# match protocol http
+				Router(config-cmap)# match protocol https
+				Router(config-cmap)# match protocol dns
+			Opções de Match:
+				match-any: O tráfego deve corresponder a pelo menos um critério.
+				match-all: O tráfego deve corresponder a todos os critérios.
+
+		.3. Definir Ações com um Policy-Map
+			Associa-se o class-map a uma ação (inspect, drop, pass).
+				Router(config)# policy-map type inspect PRIV-TO-PUB-POLICY
+				Router(config-pmap)# class type inspect HTTP-TRAFFIC
+				Router(config-pmap-c)# inspect
+				Router(config-pmap-c)# exit
+				Router(config-pmap)# class class-default
+				Router(config-pmap-c)# drop
+			Ações Disponíveis:
+
+			Ação	   Descrição
+			Inspect	   Inspeção stateful (rastreia conexões e permite tráfego de retorno).
+			Drop	   Bloqueia o tráfego (equivalente a deny em ACLs).
+			Pass	   Permite o tráfego sem rastreamento (stateless).
+
+		.4. Criar um Zone-Pair e Associar a Política
+			Define-se a origem e o destino do tráfego e aplica-se o policy-map.
+				Router(config)# zone-pair security PRIV-PUB source PRIVATE destination PUBLIC
+				Router(config-sec-zone-pair)# service-policy type inspect PRIV-TO-PUB-POLICY
+			Regras de Zone-Pair:		
+				Intra-zona: Tráfego na mesma zona é permitido por padrão.
+				Inter-zonas: Tráfego entre zonas é bloqueado, a menos que uma política exista.
+
+		.5. Atribuir Zonas às Interfaces
+			Aplica-se as zonas às interfaces físicas.
+				Router(config)# interface GigabitEthernet0/0
+				Router(config-if)# zone-member security PRIVATE
+				Router(config-if)# exit
+				Router(config)# interface Serial0/0/0
+				Router(config-if)# zone-member security PUBLIC
+			Impacto:
+				Qualquer tráfego entre G0/0 (PRIVATE) e S0/0/0 (PUBLIC) será filtrado conforme o policy-map.
+
+	- Verificação da Configuração
+		.Comandos Úteis
+
+		Comando:						Descrição:
+		`show run						begin class-map`			Mostra a configuração do ZPF.
+		show policy-map type inspect				Exibe políticas de inspeção.
+		show zone-pair security					Lista os pares de zonas configurados.
+		show zone security					Mostra as zonas e interfaces associadas.
+		show policy-map type inspect zone-pair sessions		Exibe sessões ativas.
+
+	- Considerações Importantes
+		.✅ Tráfego Intra-Zona: Sempre permitido.
+		.✅ Tráfego Inter-Zonas: Bloqueado por padrão (a menos que uma política permita).
+		.✅ Self Zone: Gerencia tráfego do roteador (SSH, OSPF, etc.).
+		.⚠ Não misture ZPF e Firewall Clássico na mesma interface.
+	- Exemplo Completo
+		.Objetivo: Permitir HTTP/HTTPS/DNS da LAN (PRIVATE) para a Internet (PUBLIC).
+		! Criar zonas
+		zone security PRIVATE
+		zone security PUBLIC
+
+		! Classificar tráfego
+		class-map type inspect match-any HTTP-TRAFFIC
+ 		match protocol http
+		match protocol https
+ 		match protocol dns
+
+		! Definir política
+		policy-map type inspect PRIV-TO-PUB-POLICY
+ 		class HTTP-TRAFFIC
+  		inspect
+ 		class class-default
+  		drop
+
+		! Aplicar política ao zone-pair
+		zone-pair security PRIV-PUB source PRIVATE destination PUBLIC
+ 		service-policy type inspect PRIV-TO-PUB-POLICY
+
+		! Atribuir zonas às interfaces
+		interface GigabitEthernet0/0
+ 		zone-member security PRIVATE
+		interface Serial0/0/0
+ 		zone-member security PUBLIC
+
+	- Resultado:
+		.Tráfego HTTP/HTTPS/DNS é inspecionado (stateful).
+		.Todo o resto é bloqueado.
+
+	- Conclusão
+		.O ZPF oferece controle granular e segurança aprimorada em comparação com ACLs tradicionais.
+		.Siga os 5 passos para configurá-lo corretamente e use show para verificar o funcionamento. 
+

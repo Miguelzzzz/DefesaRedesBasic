@@ -1,0 +1,80 @@
+6.1.1 Benefícios de um Firewall Baseado em Zonas (ZPF):
+
+	- O Zone-Based Policy Firewall (ZPF) é um modelo moderno de segurança que substitui a abordagem tradicional baseada em ACLs, oferecendo maior flexibilidade e controle.
+
+	- Comparação: ZPF vs. Firewall Clássico (ACL)
+	
+	Característica:			Firewall Clássico (ACL):			  ZPF (Zone-Based Policy Firewall):
+	Configuração			Baseada em interfaces e ACLs.			  Baseada em zonas de segurança.
+	Padrão de Segurança		Depende da ACL (pode ter falhas).		  Bloqueia tudo, a menos que permitido.
+	Granularidade			Limitada a regras estáticas.			  Políticas unidirecionais entre zonas.
+	Facilidade de Gerenciamento	Complexo com múltiplas ACLs.		  	  Estruturado e intuitivo (C3PL).
+	Escalabilidade			Requer múltiplas ACLs para diferentes tráfegos.	  Uma política abrange múltiplos fluxos.
+
+	- Vantagens do ZPF
+		.✅ Não depende de ACLs → Reduz complexidade.
+		.✅ Postura "Deny-by-Default" → Mais seguro.
+		.✅ Políticas legíveis (usando C3PL - Cisco Common Classification Policy Language).
+		.✅ Agrupa interfaces físicas e virtuais em zonas lógicas.
+		.✅ Aplicação unidirecional (ex.: LAN → Internet, mas não o inverso).
+
+	- Exemplo de Topologia ZPF
+		Copy
+		[Zona Pública (Internet)]  
+     		  ↓  
+		[Firewall]  
+   		    ↓  
+		[Zona DMZ (Servidores Web/Email)]  
+  		     ↓  
+		[Zona Privada (Rede Interna)]  
+
+	- Tráfego permitido:
+		.Privada → Internet (HTTP, HTTPS).
+		.Internet → DMZ (apenas HTTP/HTTPS).
+	- Tráfego bloqueado:
+		.Internet → Privada (sem acesso direto).
+
+6.1.2 Projeto de um ZPF:
+
+	- Etapa 1: Definir as Zonas
+		.Exemplo de zonas comuns:
+			Zona Privada: Rede interna (confiável).
+			Zona Pública: Internet (não confiável).
+			Zona DMZ: Servidores acessíveis publicamente (parcialmente confiável).
+	- Etapa 2: Estabelecer Políticas Entre Zonas
+		.Regras unidirecionais (origem → destino):			
+			Privada → Pública: Permitir navegação (HTTP/HTTPS).
+			Pública → DMZ: Permitir apenas tráfego legítimo (ex.: SMTP para email).
+			DMZ → Privada: Bloquear (exceto respostas autorizadas).
+	- Etapa 3: Projetar a Infraestrutura Física
+		.Dispositivos necessários:
+			Firewall principal (ex.: Cisco ASA ou roteador com ZPF).
+			Roteadores/Switches para segmentação.
+			Redundância (ex.: dois firewalls em HA).
+	- Etapa 4: Identificar Subzonas e Requisitos de Tráfego
+		.Exemplo:
+			Subzona "Financeiro" dentro da Zona Privada → Políticas mais restritivas.
+			Servidores críticos na DMZ → Acesso limitado apenas a portas essenciais.
+
+	- Exemplos Práticos de Projetos ZPF:
+		.1. LAN → Internet (Acesso Básico)
+			Zonas:
+				Private-Zone (LAN).
+				Public-Zone (Internet).
+			Política:
+				Permitir HTTP/HTTPS/DNS da Private para Public.
+
+		.2. Firewall com Servidores Públicos (DMZ)
+			Zonas:
+				Private-Zone (LAN).
+				DMZ-Zone (Servidores Web/Email).
+				Public-Zone (Internet).
+			Políticas:
+				Public → DMZ: HTTP/HTTPS/SMTP.
+				Private → DMZ: SSH (gerenciamento).
+
+		.3. Redundância (Dois Firewalls)
+			Objetivo: Evitar SPOF (Single Point of Failure).
+			Solução:
+				Dois firewalls em High Availability (HA).
+				Balanceamento de carga entre eles.
