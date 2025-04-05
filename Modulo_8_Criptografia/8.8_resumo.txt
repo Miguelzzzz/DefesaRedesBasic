@@ -1,0 +1,102 @@
+8.8.1. Confidencialidade:
+
+	- Criptografia Simétrica vs. Assimétrica:
+
+	Criptografia Simétrica:				Criptografia Assimétrica:
+	Usa a mesma chave para cifrar/decifrar.		Usa par de chaves (pública/privada).
+	Algoritmos: AES, DES, 3DES.			Algoritmos: RSA, ECC, DSA, ElGamal.
+	Vantagem: Rápida e eficiente.			Vantagem: Elimina necessidade de compartilhamento prévio de chaves.
+	Uso comum: VPNs, criptografia em massa.		Uso comum: SSL/TLS, assinaturas digitais.
+
+Diffie-Hellman (DH):
+
+	- Permite que duas partes gerem uma chave secreta compartilhada sem comunicação prévia.
+	- Usado em:
+		.IPsec VPNs para troca de chaves.
+		.SSH para autenticação.
+
+8.8.2. Ofuscação de Dados:
+
+	- Mascaramento de Dados
+		.Substitui dados sensíveis em ambientes não produtivos (ex: testes).
+		.Técnicas:
+			Substituição: Troca por valores fictícios (ex: nomes falsos).
+			Embaralhamento: Reordena valores dentro de um conjunto.
+			Anulação: Define valores como nulos.
+	- Esteganografia
+		.Oculta mensagens em arquivos (imagens, áudios).
+		.Vantagem: Discretude (não chama atenção como a criptografia).
+
+8.8.3. Integridade e Autenticidade:
+
+	- Elementos das Comunicações Seguras
+		.Integridade: Garante que os dados não foram alterados (usando hashes como SHA-256).
+		.Autenticação: Confirma a origem dos dados (usando HMAC ou assinaturas digitais).
+		.Confidencialidade: Protege dados contra leitura não autorizada (via criptografia).
+		.Não repúdio: Impede que o remetente negue o envio (via assinaturas digitais).
+	- Funções de Hash
+		.Propriedades:
+			Entrada de qualquer tamanho → Saída de tamanho fixo (ex: SHA-256 gera 256 bits).
+			Unidirecional: Não é possível reverter o hash para obter os dados originais.
+			Resistente a colisões: Diferentes entradas geram hashes diferentes.
+		.Algoritmos:
+			Inseguros: MD5, SHA-1.
+			Seguros: SHA-2 (SHA-256), SHA-3.
+	- HMAC (Hash-based Message Authentication Code)
+		.Combina uma função de hash com uma chave secreta para garantir:
+			Autenticação (só quem tem a chave pode gerar o HMAC).
+			Integridade (qualquer alteração invalida o HMAC).
+
+8.8.4. Proteção de Senhas com Hash e Salt:
+
+	- Salt (Salto)
+		.O que é? String aleatória adicionada à senha antes do hash.
+		.Objetivo:
+			Evitar que senhas iguais gerem hashes iguais.
+			Neutralizar ataques de dicionário e rainbow tables.
+		.Boas Práticas:
+			Usar CSPRNG para gerar salts únicos.
+			Nunca reutilizar salts.
+	- Ataques a Hashes
+		.Ataque de Dicionário: Testa senhas comuns pré-calculadas.
+		.Ataque de Força Bruta: Testa todas as combinações possíveis.
+
+8.8.5. Assinaturas Digitais e Certificados:
+	
+	- Assinaturas Digitais
+		.Algoritmos: RSA, DSA, ECDSA.
+		.Propriedades:
+			Autenticidade: Só o titular da chave privada pode assinar.
+			Integridade: Qualquer alteração invalida a assinatura.
+			Não repúdio: Vincula o documento ao signatário legalmente.
+	- Certificados Digitais
+		.Função: Autenticar identidades (ex: sites, usuários).
+		.Emitidos por: Autoridades Certificadoras (CAs) como DigiCert, Let’s Encrypt.
+		.Padrão: X.509 v3 (define estrutura do certificado).
+
+8.8.6. Infraestrutura de Chave Pública (PKI):
+
+	- Componentes da PKI
+		.Autoridade Certificadora (CA): Emite e revoga certificados.
+		.Autoridade de Registro (RA): Valida identidades antes da emissão.
+		.Repositório de Certificados: Armazena certificados válidos/revogados.
+	- Topologias PKI
+		.Raiz Única: Simples, mas com ponto único de falha.
+		.Certificação Cruzada: CAs de diferentes organizações confiam entre si.
+		.Hierárquica: CA raiz → Sub-CAs (ex: para departamentos).
+	- Revogação de Certificados
+		.CRL (Certificate Revocation List): Lista de certificados revogados.
+		.OCSP (Online Certificate Status Protocol): Verificação em tempo real.
+
+8.8.7. Aplicações e Desafios da Criptografia:
+
+	- Usos da PKI
+		.HTTPS: Autenticação de sites.
+		.VPNs IPsec: Criptografia de tráfego.
+		.S/MIME: E-mails seguros.
+		.Autenticação 802.1X: Acesso a redes com certificados.
+	- Desafios
+		.Tráfego Criptografado: Dificulta a detecção de malware (ex: ataques C2 via TLS).
+		.Soluções:
+			SSL Decryption: Inspeção de tráfego HTTPS em firewalls.
+			Validação de Certificados: Usar OCSP/CRL para evitar certificados inválidos.

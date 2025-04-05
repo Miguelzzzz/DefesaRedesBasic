@@ -1,0 +1,57 @@
+8.2.1 Técnicas de Mascaramento de Dados:
+
+	- O mascaramento de dados protege informações confidenciais substituindo-as por versões não sensíveis, mas funcionalmente equivalentes, permitindo seu uso em ambientes não produtivos (como testes) sem expor os dados originais.
+
+	- Técnicas Principais:
+		.Substituição:
+			Troca dados sensíveis por valores fictícios, mas realistas (ex.: nomes fictícios em um banco de dados de teste).
+			Mantém a estrutura e a utilidade dos dados.
+		.Embaralhamento:
+			Reorganiza valores dentro de uma mesma coluna (ex.: embaralhar salários em um arquivo de funcionários).
+			Útil para dados financeiros em ambientes de teste.
+		.Anulação:
+			Substitui dados sensíveis por valores nulos (ex.: CPF ou número de cartão de crédito vazio).
+			Elimina completamente a visibilidade dos dados originais.
+		.Vantagens:
+			Minimiza riscos de vazamento em ambientes de desenvolvimento e análise.
+			Preserva a integridade funcional dos sistemas que usam os dados mascarados.
+
+8.2.2 Esteganografia:
+
+	- A esteganografia oculta mensagens secretas dentro de arquivos comuns (imagens, áudios, textos) sem chamar atenção, diferindo da criptografia, que torna a mensagem ilegível mas evidente.
+	- Componentes:
+		.Dados integrados: Mensagem secreta a ser ocultada.
+		.Arquivo de cobertura: Imagem, áudio ou texto que "esconde" a mensagem (ex.: foto de um gato).
+		.Estego-texto: Arquivo resultante após a ocultação.
+		.Estego-chave: Chave usada para inserir/extrair a mensagem.
+	- Técnicas Comuns:
+		.Bits Menos Significativos (LSB):
+			Altera os bits menos importantes dos pixels de uma imagem (ex.: em uma cor RGB, modifica o último bit de cada canal).
+			Alterações são imperceptíveis ao olho humano.
+			Exemplo: Uma imagem de 24 bits pode armazenar 3 bits de mensagem por pixel.
+		.Esteganografia Social:
+			Usa linguagem codificada ou contextos específicos para esconder mensagens (ex.: "Ir ao cinema" significa "Ir à praia").
+			Popular em redes sociais para evitar censura ou vigilância.
+	- Detecção (Esteganoanálise):
+		.Busca padrões suspeitos em arquivos (ex.: repetição de bits em imagens).
+		.Ferramentas analisam discrepâncias entre arquivos originais e modificados.
+		.Exemplo: Clusters não utilizados em discos ou cabeçalhos de pacotes de rede podem conter dados ocultos.
+	- Vantagens:
+		.Discretude: a mensagem não chama atenção como na criptografia.
+		.Útil para comunicação sigilosa em cenários de censura ou vigilância.
+	- Desafios:
+		.Requer cuidado para não alterar demais o arquivo de cobertura, evitando suspeitas.
+		.Ferramentas avançadas de análise podem identificar técnicas de ocultação.
+	- Comparação entre Mascaramento e Esteganografia:
+
+	Critério:	Mascaramento de Dados:					Esteganografia:
+	Objetivo	Proteger dados sensíveis em ambientes não produtivos.	Ocultar a existência de uma mensagem.
+	Técnica		Substituição, embaralhamento ou anulação.		Inserção em bits de arquivos (imagens, áudios).
+	Uso típico	Testes, desenvolvimento, análise.			Comunicação secreta, evasão de censura.
+	Visibilidade	Dados são visíveis, mas falsificados.			Mensagem é invisível no arquivo.
+
+8.2.3 Conclusão:
+
+	- Mascaramento: Focado em proteger dados reais em ambientes de baixo risco, mantendo sua utilidade.
+	- Esteganografia: Voltada para comunicação oculta, ideal para situações onde a discrição é essencial.
+

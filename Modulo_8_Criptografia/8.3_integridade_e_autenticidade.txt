@@ -1,0 +1,59 @@
+8.3.1 Comunicações Seguras:
+	
+	- As comunicações seguras garantem a proteção dos dados em trânsito, especialmente em redes externas (filiais, trabalho remoto, parceiros). Os quatro pilares são:
+	- Integridade dos Dados
+		.Garante que a mensagem não foi alterada.
+		.Técnica: Funções de hash (SHA-2, SHA-3).
+		.Evitar: MD5 (inseguro).
+	- Autenticação de Origem
+		.Confirma que a mensagem vem do remetente legítimo.
+		.Técnica: HMAC (Hash-based Message Authentication Code).
+	- Confidencialidade
+		.Impede que dados sejam lidos por não autorizados.
+		.Técnica: Criptografia simétrica (AES) e assimétrica (RSA).
+	- Não Repúdio
+		.Impede que o remetente negue o envio da mensagem.
+		.Técnica: Assinaturas digitais (ex: RSA, ECDSA).
+	- Tendência atual: Toda comunicação deve ser criptografada (ex: HTTPS, VPNs).
+
+8.3.2 Funções Criptográficas de Hash:
+
+	- Objetivo: Verificar a integridade dos dados (detectar alterações acidentais ou intencionais).
+	- Propriedades de um Hash Criptográfico
+		.Entrada: Qualquer tamanho.
+		.Saída: Valor de tamanho fixo (ex: 256 bits para SHA-256).
+		.Unidirecional: Fácil calcular, difícil reverter.
+		.Livre de colisões: Diferentes entradas geram hashes diferentes.
+		.Analogia: Moer café → Fácil transformar grãos em pó, mas impossível reconstruir os grãos originais.
+	- Exemplo de Uso
+		.Mensagem original: "Pague Alex $100" → Hash: 4ehiDx67NMop9
+		.Mensagem alterada: "Pague Jeremy $1000" → Hash: 12ehqPx67NMoX
+		→ A diferença no hash revela a adulteração.
+
+8.3.3 Algoritmos de Hash Comuns:
+
+	Algoritmo:	Tamanho do Hash:	Segurança:	Recomendação:
+	MD5		128 bits		Inseguro	Evitar.
+	SHA-1		160 bits		Vulnerável	Evitar.
+	SHA-2		224-512 bits		Seguro		Usar SHA-256 ou superior.
+	SHA-3		224-512 bits		Mais seguro	Melhor opção atual.
+
+	- Problema do Hash Puro:
+		.Não protege contra ataques Man-in-the-Middle (um invasor pode alterar a mensagem e recalcular o hash).
+		.Solução: Usar HMAC (Hash + Chave Secreta).
+
+8.3.4 HMAC (Hash-based Message Authentication Code):
+
+	- Combina uma função de hash (SHA-256) com uma chave secreta para garantir:
+		.Autenticação (só quem tem a chave pode gerar o hash).
+		.Integridade (qualquer alteração invalida o hash).
+	- Funcionamento do HMAC
+		.Remetente:
+			Calcula o HMAC usando mensagem + chave secreta.
+			Envia mensagem + HMAC.
+		.Destinatário:
+			Recalcula o HMAC com a mesma chave.
+			Se os HMACs coincidirem, a mensagem é autêntica e íntegra.
+	- Exemplo em Redes:
+		.OSPF (Roteamento): Roteadores usam HMAC para verificar atualizações de rota.
+		.SSL/TLS, IPsec, SSH: Autenticação de mensagens.

@@ -1,0 +1,82 @@
+8.4.1 Verificação de Integridade com Hash:
+
+	- Objetivo: Garantir que arquivos ou mídias digitais não foram alterados.
+	- Aplicações:
+		.Downloads de software (ex: imagens IOS da Cisco):
+			O site fornece checksums (MD5/SHA) para comparação.
+			Se o hash do arquivo baixado não coincidir com o oficial, o arquivo foi corrompido ou adulterado.
+		.Computação forense:
+			Cria-se um clone bit-a-bit da mídia original e compara-se os hashes.
+			Se os hashes forem iguais, a cópia é idêntica ao original (invariabilidade).
+	- Exemplo Forense:
+		.Perguntas-chave:
+			Os arquivos estão intactos?
+			Houve corrupção ou manipulação?
+			É possível provar a autenticidade dos dados?
+
+8.4.2 Proteção de Senhas com Hash:
+
+	- Problema: Como armazenar senhas sem expô-las?
+	- Solução:
+		.Hash unidirecional transforma a senha em uma "impressão digital" (ex: SHA-256).
+		.O sistema só armazena o hash, não a senha em texto claro.
+	- Fluxo de Autenticação:
+		.Registro:
+			Senha digitada → Hash calculado → Hash armazenado no banco de dados.
+		.Login:
+			Senha digitada → Hash recalculado → Comparação com o hash armazenado.
+		.Vantagem:
+			Mesmo que o banco de dados seja vazado, invasores não veem as senhas originais.
+
+8.4.3 Ataques a Hashes de Senha:
+
+	- Ataque de Dicionário:
+		.Usa uma lista de senhas comuns (ex: "123456", "password") e compara seus hashes pré-calculados com os hashes vazados.
+		.Eficaz contra: Senhas fracas.
+	- Ataque de Força Bruta:
+		.Testa todas as combinações possíveis de caracteres.
+		.Desvantagem: Consome tempo e recursos (ex: senhas longas são mais seguras).
+	- Problema:
+		.Hashes iguais para senhas iguais (ex: dois usuários com senha "admin" terão o mesmo hash).
+
+8.4.4 Salting (Salto) para Proteção Extra:
+
+	- O que é? Adição de uma string aleatória (salt) à senha antes do hash.
+	- Benefícios:
+		.Mesma senha + salt diferente → Hashes diferentes.
+		.Impede:
+			Ataques com tabelas de pesquisa (pré-calculadas).
+			Rainbow tables (tabelas otimizadas para quebrar hashes).
+		.Exemplo:
+			Senha: "senha123"
+			Salt aleatório: "x7!pL"
+			Hash final: SHA-256("senha123x7!pL") → Único para cada usuário.
+
+8.4.5 Boas Práticas para Salting:
+
+	- Gere salts únicos para cada senha (use CSPRNG*).
+	- Nunca reutilize salts.
+	- Tamanho do salt: Deve ser igual ao tamanho do hash (ex: 32 bytes para SHA-256).
+	- Alongamento de chave (key stretching):
+		.Aplica o hash múltiplas vezes (ex: PBKDF2, bcrypt).
+		.Objetivo: Tornar ataques de força bruta mais lentos.
+	- *CSPRNG = Gerador de números aleatórios criptograficamente seguro.
+
+8.4.6 Técnicas de Ataque Evitadas por Salting:
+
+	Técnica de Ataque:	  Como Funciona:					Por que o Salting Protege?:
+	Tabelas de Pesquisa	  Hashes pré-calculados para senhas comuns.		O salt torna cada hash único, invalidando tabelas.
+	Rainbow Tables	Tabelas   compactas para quebrar hashes rapidamente.		Salt aleatório exige tabelas específicas por hash.
+	Ataque de Dicionário	  Testa senhas comuns em massa.				Salt força recálculo individual para cada senha.
+
+	- Conclusão
+		.Hash (SHA-256, SHA-3) → Garante integridade e armazenamento seguro de senhas.
+		.Salting → Neutraliza ataques de tabelas pré-calculadas.
+		.Key Stretching → Aumenta a resistência a força bruta.
+	- Recomendações:
+		.✅ Use SHA-256 ou SHA-3 para hashing.
+		.✅ Nunca armazene senhas em texto claro.
+		.✅ Implemente salting único por usuário.
+		.✅ Adote alongamento de chave (ex: bcrypt, PBKDF2).
+		.✅ Evite MD5 e SHA-1 (obsoletos e inseguros).
+	- Impacto: Essas técnicas são essenciais para proteger dados em sistemas de autenticação, bancos de dados e evidências forenses.

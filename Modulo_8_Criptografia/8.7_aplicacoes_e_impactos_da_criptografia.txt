@@ -1,0 +1,53 @@
+8.7.1 Aplicações Comuns de PKI em Empresas:
+
+	- A Infraestrutura de Chave Pública (PKI) é usada para garantir autenticação, integridade e confidencialidade em diversas aplicações:
+
+	Aplicação:					Descrição:
+	SSL/TLS						Autenticação de servidores web (HTTPS) e clientes.
+	VPNs IPsec					Criptografia de tráfego entre redes corporativas.
+	Autenticação 802.1X				Controle de acesso a redes Wi-Fi/Ethernet com certificados digitais.
+	S/MIME						Criptografia e assinatura de e-mails.
+	Assinatura de Código				Verificação da autenticidade de softwares (ex: atualizações da Cisco).
+	EFS (Sistema de Arquivos Criptografados)	Proteção de dados em discos com criptografia baseada em certificados.
+	Autenticação em Dois Fatores			Uso de cartões inteligentes com certificados.
+	Proteção de Dispositivos USB			Criptografia de pendrives com chaves vinculadas a certificados.
+
+8.7.2 Desafios em Transações Criptografadas:
+
+	- Riscos do Tráfego SSL/TLS
+		.Monitoramento dificultado:
+			Criptografia impede a inspeção de malware ou vazamento de dados em tráfego HTTPS.
+			Ameaças como comando e controle criptografado (ex: botnets) podem passar despercebidas.
+		.Problemas com Certificados:
+			Certificados expirados: Falha na renovação pelo administrador.
+			Erros de validação: Assinatura inválida ou CA raiz não confiável (ex: alertas no navegador).
+			Exemplo: Cisco AnyConnect VPN pode bloquear conexões se o certificado for inválido.
+	- Soluções para Mitigar Riscos
+		.Validação Rigorosa:
+			Usar CRLs (Listas de Certificados Revogados) e OCSP (verificação em tempo real).
+		.Inspeção de Tráfego Criptografado:
+			SSL Appliances (ex: Cisco SSL Appliance) descriptografam tráfego para análise por IPS/IDS.
+		.Filtragem de Conteúdo:
+			Antimalware e filtros de URL para tráfego HTTPS.
+		.Segmentação de Tráfego:
+			Regras para diferenciar tráfego SSL vs. não-SSL.
+
+8.7.3 Criptografia e Monitoramento de Segurança:
+
+	- Desafios
+		.Dados "escondidos" pela criptografia:
+			Ataques como exfiltração de dados ou comunicação C2 (Command and Control) podem usar TLS para evitar detecção.
+		.Ataques a Algoritmos:
+			Se um algoritmo for quebrado (ex: RSA com chave curta), dados históricos criptografados ficam vulneráveis.
+	- Estratégias para Investigação
+		.Descriptografia Controlada:
+			Usar proxies SSL para inspecionar tráfego interno (ex: em firewalls corporativos).
+		.Detecção de Anomalias:
+			Identificar padrões suspeitos em tráfego TLS (ex: conexões incomuns para servidores desconhecidos).
+		.Atualização Contínua:
+			Monitorar vulnerabilidades em algoritmos (ex: migrar de SHA-1 para SHA-256).
+	- Caso Prático: Ataque Criptografado
+		.Cenário: Um invasor usa TLS para comunicar-se com um malware na rede corporativa.
+		.Solução:
+			SSL Decryption no firewall para inspecionar o tráfego.
+			Assinaturas de Ataque: Comparar tráfego descriptografado com padrões de ameaças conhecidas.

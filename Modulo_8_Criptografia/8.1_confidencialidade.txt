@@ -1,0 +1,55 @@
+8.1.1 Criptografia Simétrica:
+
+	- Definição: Usa a mesma chave para criptografar e descriptografar dados.
+	- Características:
+		.Velocidade: Mais rápida que a criptografia assimétrica.
+		.Comprimento da chave: Curto (40 a 256 bits).
+		.Uso comum: Criptografia de grandes volumes de dados, como tráfego VPN.
+	- Algoritmos conhecidos:
+		.DES (Data Encryption Standard): Legado, inseguro devido ao tamanho pequeno da chave.
+		.3DES (Triple DES): Melhoria do DES, mas em desuso (aposentadoria em 2023).
+		.AES (Advanced Encryption Standard): Recomendado, com chaves de 128, 192 ou 256 bits.
+		.SEAL: Cifra de fluxo rápida, com chave de 160 bits.
+		.RC4: Cifra de fluxo, mas vulnerável e não recomendada.
+	- Modos de operação:
+		.Cifra de bloco: Processa dados em blocos fixos (ex: AES em blocos de 128 bits).
+		.Cifra de fluxo: Processa dados bit a bit (ex: RC4).
+
+8.1.2 Criptografia Assimétrica:
+
+	- Definição: Usa um par de chaves (pública e privada) para criptografia e descriptografia.
+	- Características:
+		.Velocidade: Mais lenta que a simétrica devido a cálculos complexos.
+		.Comprimento da chave: Longo (512 a 4096 bits).
+		.Uso comum: Autenticação, troca de chaves e assinaturas digitais (ex: HTTPS, SSH).
+	- Algoritmos conhecidos:
+		.RSA (Rivest, Shamir, Adleman): Baseado na fatoração de números grandes, usado em comércio eletrônico.
+		.Diffie-Hellman (DH): Permite acordo de chave secreta sem comunicação prévia.
+		.DSA (Digital Signature Algorithm): Para assinaturas digitais, mas lento na verificação.
+		.ElGamal: Baseado no DH, mas aumenta o tamanho da mensagem.
+		.Curvas Elípticas (ECC): Chaves menores com segurança equivalente a métodos tradicionais.
+	- Aplicações:
+		.Confidencialidade: Chave pública criptografa, chave privada descriptografa.
+		.Autenticação: Chave privada criptografa, chave pública descriptografa (prova de identidade).
+		.Integridade: Combinação de hash e criptografia para verificar autenticidade e não alteração.
+
+8.1.3 Diffie-Hellman (DH):
+
+	- Função: Permite que duas partes gerem uma chave secreta compartilhada sem comunicação prévia.
+	-  Grupos DH:
+		.Grupos com números primos maiores oferecem mais segurança (ex: Grupo 14 = 2048 bits).
+		.Grupos baseados em curvas elípticas (ex: Grupos 19, 20, 24) são eficientes.
+	- Exemplo de uso: VPNs IPsec e SSH.
+	- Comparação entre Simétrica e Assimétrica:
+
+	Critério:		Criptografia Simétrica:		Criptografia Assimétrica:
+	Chaves			Única chave compartilhada	Par de chaves (pública/privada)
+	Velocidade		Rápida				Lenta
+	Tamanho da chave	40-256 bits			512-4096 bits
+	Uso típico		Criptografia em massa (VPNs)	Autenticação, troca de chaves
+
+8.1.4 Conclusão:
+
+	- Simétrica: Ideal para criptografia eficiente de grandes volumes de dados.
+	- Assimétrica: Essencial para autenticação, troca segura de chaves e integridade.
+	- Combinação: Sistemas modernos frequentemente usam ambos (ex: SSL/TLS usa assimétrica para trocar chaves simétricas).

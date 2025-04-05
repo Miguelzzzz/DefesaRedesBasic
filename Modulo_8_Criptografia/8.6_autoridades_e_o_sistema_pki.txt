@@ -1,0 +1,81 @@
+8.6.1 Gerenciamento de Chave Pública (PKI):
+
+	- Objetivo: Garantir autenticidade, integridade e confidencialidade em comunicações digitais.
+	- Componentes da PKI:
+		.Autoridade Certificadora (CA):
+			Emite e valida certificados digitais (ex: DigiCert, GlobalSign, Let's Encrypt).
+			Tipos de CAs:
+				Públicas: Terceirizadas (ex: Symantec, Comodo).
+				Privadas: Internas (ex: Microsoft Active Directory Certificate Services).
+		.Certificado Digital:
+			Contém:
+				Chave pública do titular.
+				Identidade do titular (ex: domínio, organização).
+				Assinatura digital da CA.
+				Período de validade.
+		.Armazenamento de Certificados:
+			Bancos de dados ou diretórios (ex: LDAP, Active Directory).
+		.Autoridade de Registro (RA):
+			Subordinada à CA, valida identidades antes da emissão de certificados.
+
+8.6.2 Funcionamento da PKI:
+
+	- Fluxo de Autenticação:
+		.Emissão do Certificado:
+			A CA verifica a identidade do solicitante (ex: documento de identidade para certificados Classe 3+).
+			Emite um certificado assinado digitalmente.
+		.Troca de Certificados:
+			Bob envia seu certificado para Alice.
+			Alice verifica a assinatura da CA no certificado de Bob.
+		.Validação:
+			O navegador ou sistema consulta a CA para confirmar se o certificado é válido e não foi revogado.
+	- Exemplo Prático (HTTPS):
+		.Um site com SSL/TLS apresenta seu certificado (emitido por uma CA confiável).
+		.O navegador verifica:
+			Validade do certificado.
+			Se a CA está pré-instalada como confiável (ex: certificados raiz no Chrome).
+
+8.6.3 Classes de Certificados:
+
+	Classe:	  Uso:						Nível de Confiança:
+	0	  Testes (sem verificação).			Muito baixo.
+	1	  Indivíduos (verificação por e-mail).		Baixo.
+	2	  Organizações (prova de identidade básica).	Médio.
+	3	  Servidores e assinatura de software.		Alto.
+	4	  Transações comerciais B2B.			Muito alto.
+	5	  Governo ou segurança corporativa crítica.	Máximo.
+
+	- Exemplo:
+		.Certificado Classe 3: Exige apresentação presencial com dois documentos de identidade.
+
+8.6.4 Topologias PKI:
+
+	- 1. PKI de Raiz Única
+		.Vantagem: Simplicidade.
+		.Desvantagem: Ponto único de falha (se a CA raiz for comprometida).
+	- 2. Certificação Cruzada
+		.Vantagem: Redundância (ex: empresas parceiras confiam mutuamente em suas CAs).
+	- 3. Hierárquica
+		.Estrutura:
+			CA Raiz → Sub-CAs (ex: por departamentos ou regiões).
+		.Vantagem: Escalabilidade e gerenciamento facilitado.
+
+8.6.5 Aplicações de Certificados X.509 v3:
+
+	Aplicação:	Uso:
+	SSL/TLS		Autenticação de sites HTTPS (ex: navegadores).
+	IPsec		Autenticação em VPNs.
+	S/MIME		Criptografia e assinatura de e-mails.
+	EAP-TLS		Autenticação em redes Wi-Fi empresariais (802.1X).
+
+8.6.6 Revogação de Certificados:
+
+	- Métodos de Revogação:
+		.CRL (Certificate Revocation List):
+			Lista de certificados revogados atualizada periodicamente.
+			Problema: Atraso na propagação das revogações.
+		.OCSP (Online Certificate Status Protocol):
+			Consulta em tempo real para verificar se um certificado foi revogado.
+			Vantagem: Resposta imediata.
+		.Exemplo:
+			Se uma chave privada for comprometida, a CA revoga o certificado e atualiza a CRL/OCSP.

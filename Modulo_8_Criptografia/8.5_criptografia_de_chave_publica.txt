@@ -1,0 +1,75 @@
+8.5.1 O que são Assinaturas Digitais?:
+
+	- Definição: Técnica matemática que usa criptografia assimétrica para garantir:
+		.Autenticidade → Confirma a identidade do remetente.
+		.Integridade → Garante que a mensagem não foi alterada.
+		.Não repúdio → Impede que o remetente negue o envio.
+	- Propriedades:
+		Inalterável: Após assinado, o documento não pode ser modificado.
+		Não reutilizável: A assinatura é válida apenas para o documento original.
+		Legalmente vinculante: Equivalente a uma assinatura física em documentos.
+	- Algoritmos Comuns:
+
+	Algoritmo:				Descrição:
+	DSA (Digital Signature Algorithm)	Padrão original para assinaturas digitais.
+	RSA					Amplamente usado em certificados SSL/TLS e assinatura de código.
+	ECDSA (Elliptic Curve DSA)		Versão mais eficiente do DSA, com chaves menores e menor consumo de recursos.
+
+8.5.2 Assinatura de Código:
+
+	- Objetivo: Verificar a autenticidade e integridade de softwares baixados.
+	- Como Funciona:
+		.A editora (ex: Cisco) assina o executável com sua chave privada.
+		.O usuário verifica a assinatura usando a chave pública da editora.
+		.Se o hash do arquivo coincidir com o hash descriptografado da assinatura, o código é legítimo.
+	- Exemplo Prático:
+		.Propriedades de um arquivo assinado:
+			Nome da editora (ex: "Cisco Systems Inc").
+			Algoritmo de hash usado (ex: SHA-256).
+			Data da assinatura e autoridade certificadora (ex: "Entrust Timestamping Authority").
+	- Padrões:
+		.FIPS 140-3: Exige que softwares governamentais sejam assinados digitalmente.
+
+8.5.3 Certificados Digitais:
+
+	- Definição: "Passaportes eletrônicos" que autenticam identidades online (ex: sites, usuários).
+	- Componentes:
+		.Emitido por: Autoridade Certificadora (CA) confiável (ex: DigiCert, Let’s Encrypt).
+		.Contém:
+			Nome da entidade (ex: "Cisco Systems").
+			Chave pública.
+			Período de validade.
+			Assinatura digital da CA.
+	- Comparação com Assinaturas Digitais:
+
+	Certificado Digital:				Assinatura Digital:
+	Verifica identidade (ex: site, usuário).	Verifica autenticidade e integridade de um documento/mensagem.
+	Usado em HTTPS, VPNs, e-mails.			Usado em contratos, softwares, transações.
+
+	- Funcionamento Prático (Exemplo Bob e Alice)
+		.Cenário: Bob envia um pedido assinado digitalmente para Alice.
+		.Processo de Assinatura (Bob):
+			Cria um hash da mensagem (ex: SHA-256).
+			Criptografa o hash com sua chave privada → Gera a assinatura digital.
+			Anexa a assinatura ao documento e envia para Alice.
+		.Processo de Verificação (Alice):
+			Descriptografa a assinatura usando a chave pública de Bob → Obtém o hash original.
+			Gera um novo hash da mensagem recebida.
+			Compara os hashes:
+				Se iguais, a mensagem é autêntica e íntegra.
+				Se diferentes, a mensagem foi adulterada ou não veio de Bob.
+	- Vantagens das Assinaturas Digitais
+		.✅ Segurança:
+			Resistente a falsificação (depende da chave privada).
+			Hash + criptografia garantem integridade.
+		.✅ Conformidade Legal:
+			Reconhecidas juridicamente (ex: eIDAS na UE).
+		.✅ Automação:
+			Usadas em APIs, transações bancárias, contratos eletrônicos.
+
+	- Ataques e Mitigações:
+
+	Ataque:				Proteção:
+	Falsificação de identidade	Certificados digitais emitidos por CAs confiáveis.
+	Alteração de mensagem		Hash criptográfico (ex: SHA-3) detecta mudanças.
+	Repúdio				Não repúdio via assinatura única com chave privada.
