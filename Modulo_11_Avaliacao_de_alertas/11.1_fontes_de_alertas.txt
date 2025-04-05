@@ -1,0 +1,93 @@
+11.1.1 Security Onion (Cebola Segurança):
+
+	- Definição:
+		.Distribuição Linux (Ubuntu) para Monitoramento de Segurança de Rede (NSM).
+		.Combina:
+			Captura completa de pacotes (PCAP).
+			Sistemas de detecção de intrusão (NIDS/HIDS).
+			Ferramentas de análise de alertas.
+	- Componentes Principais:
+		.Snort/Suricata: NIDS baseado em regras.
+		.Zeek (Bro): NIDS baseado em comportamento.
+		.OSSEC/Wazuh: HIDS para monitoramento de hosts.
+		.Sguil/Kibana: Ferramentas de análise e visualização.
+
+11.1.2 Ferramentas de Detecção:
+
+	- 1. Snort
+		.Função: Gera alertas baseados em regras/assinaturas.
+		.Exemplo de Regra:
+			alert tcp $EXTERNAL_NET any -> $HOME_NET 21 (msg:"Exploit FTP Backdoor"; content:"USER root"; sid:1000001;)  
+	
+			Variáveis: $HOME_NET (rede interna) e $EXTERNAL_NET (rede externa).
+			Atualização de Regras: Usa PulledPork para baixar regras automaticamente.
+	- 2. Zeek (Bro)
+		.Abordagem: Baseada em scripts/políticas (não em assinaturas).
+		.Recursos:
+			Extrai arquivos para análise de malware.
+			Bloqueia acessos a sites maliciosos.
+	- 3. Suricata
+		.Diferenciais:
+			Suporte a multithreading (melhor desempenho).
+			Bloqueio em tempo real (IPS).
+	- 4. OSSEC/Wazuh
+		.Monitoramento de Hosts:
+			Integridade de arquivos.
+			Logs do sistema.
+			Detecção de rootkits.
+
+11.1.3 Ferramentas de Análise:
+
+	Ferramenta:	Função:
+	Sguil		Console central para investigar alertas (integra Snort, Zeek, OSSEC).
+	Kibana		Painel interativo para visualização de dados (Elasticsearch).
+	Wireshark	Análise detalhada de pacotes (aberto diretamente do Sguil).
+	CapMe		Visualiza sessões de rede (Camada 4) e transcrições de PCAP.
+
+11.1.4 Geração de Alertas:
+
+	- Fontes de Alertas:
+		.NIDS: Snort, Zeek, Suricata.
+		.HIDS: OSSEC, Wazuh.
+		.Syslog: Mensagens de dispositivos de rede.
+
+	- Estrutura de um Alerta no Sguil:
+
+	Campo:		Exemplo:			Descrição:
+	ST		RT (Real-Time)			Status do evento (codificado por cor: amarelo → vermelho).
+	CNT		5				Número de ocorrências do mesmo evento.
+	Sensor		Snort-eth1			Origem do alerta (ex: interface de rede).
+	Alert ID	1.24				ID do sensor + ID do evento.
+	Message		"ET EXPLOIT FTP Backdoor"	Descrição do alerta.
+
+11.1.5 Estrutura de Regras Snort:
+
+	- Cabeçalho da Regra
+		alert tcp $EXTERNAL_NET any -> $HOME_NET 21  
+	
+		.Ação: alert (outras: log, pass).
+		.Protocolo: tcp, udp, ip.
+		.Direção: -> (origem → destino).
+		.IP/Porta: any ou valores específicos.
+	- Opções da Regra
+		(msg:"Exploit FTP Backdoor"; content:"USER root"; sid:1000001; rev:1;)  
+
+		.msg: Descrição do alerta.
+		.content: Conteúdo específico no pacote (ex: "USER root").
+		.sid: ID único da regra.
+		.rev: Revisão da regra.
+	- Fontes de Regras:
+		.GPL: Regras antigas (Snort.org).
+		.ET (Emerging Threats): Código aberto (Proofpoint).
+		.VRT (Cisco Talos): Regras premium (assinantes).
+
+11.1.6 Exemplo Prático:
+
+	- Alerta no Sguil:
+		RT | 3 | Snort-eth1 | 1.24 | 2023-10-05 14:30:00 | ET EXPLOIT FTP Backdoor  
+	- Regra Associada:
+		alert tcp $EXTERNAL_NET any -> $HOME_NET 21 (msg:"ET EXPLOIT FTP Backdoor"; content:"USER root"; sid:2013188;)  
+	- Ação do Analista:
+		.Verificar o IP de origem ($EXTERNAL_NET).
+		.Analisar o conteúdo do pacote (ex: tentativa de login como root).
+		.Escalonar ou descartar com base na criticidade.

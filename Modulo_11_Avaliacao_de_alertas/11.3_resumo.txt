@@ -1,0 +1,44 @@
+11.3.1 Fontes de Alertas e Ferramentas no Security Onion:
+ 
+	- Security Onion (Cebola Segurança):
+		.Plataforma NSM (Network Security Monitoring) baseada em Ubuntu.
+		.Componentes Principais:
+			Captura de Pacotes: PCAP, Zeek, Wireshark.
+			Detecção de Intrusão:
+				NIDS: Snort, Suricata (baseado em regras).
+				HIDS: OSSEC, Wazuh (monitoramento de hosts).
+			Análise de Alertas: Sguil, Kibana, CapMe.
+	- Geração de Alertas:
+		.Snort:
+			Estrutura de Regras:
+				Cabeçalho: Ação (alert), protocolo, IPs/portas (ex: $HOME_NET).
+				Opções: msg, content, sid (ID da regra).
+			Fontes de Regras: GPL (open-source), ET (Emerging Threats), VRT (Cisco Talos).
+		.Outras Fontes: Syslog, transações HTTP/DNS, monitoramento de ativos.
+
+11.3.2 Avaliação de Alertas:
+
+	- Classificação de Alertas:
+
+	Tipo:				Definição:					Impacto:
+	Verdadeiro Positivo (VP)	Alerta correto (incidente real detectado).	Desejável.
+	Falso Positivo (FP)		Alerta incorreto (atividade benigna).		Custoso (tempo de análise).
+	Verdadeiro Negativo (VN)	Silêncio correto (nenhuma ameaça).		Ideal.
+	Falso Negativo (FN)		Silêncio perigoso (ameaça não detectada).	Crítico (risco contínuo).
+
+	- Estratégias para Melhoria:
+		.Reduzir FPs: Ajustar regras (ex: refinar content em Snort).
+		.Minimizar FNs: Atualizar assinaturas e monitorar ameaças emergentes.
+
+11.3.3 Análise de Risco:
+
+	- Abordagens:
+
+	Tipo:		  Princípio:									Aplicação:
+	Determinística	  Assume etapas conhecidas do ataque (ex: exploit em porta 21).			Para ameaças com assinaturas claras.
+	Probabilística	  Calcula probabilidade de sucesso com base em estatísticas (ex: phishing).	Para ataques dinâmicos ou evasivos.
+	
+	- Ferramentas de Apoio:
+		.Sguil: Triagem inicial de alertas.
+		.Kibana: Identificação de padrões/anomalias.
+		.Zeek/Wireshark: Análise aprofundada de tráfego.

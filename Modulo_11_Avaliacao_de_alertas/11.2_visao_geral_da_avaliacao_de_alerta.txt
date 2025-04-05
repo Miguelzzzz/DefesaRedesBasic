@@ -1,0 +1,62 @@
+11.2.1 A Necessidade de Avaliação:
+
+	- Cenário Dinâmico:
+		.Novas vulnerabilidades e técnicas de evasão surgem constantemente.
+		.Desafio: Equilibrar detecção (evitar falsos negativos) e precisão (reduzir falsos positivos).
+	- Papel do Analista:
+		.Investigar alertas em ferramentas como Sguil, usando Zeek, Wireshark e Kibana para validação.
+
+11.2.2 Classificação de Alertas:
+
+	- Baseada em diagnósticos médicos, os alertas se enquadram em quatro categorias:
+
+	Tipo:				Definição:							Impacto:
+	Verdadeiro Positivo (VP)	Alerta correto: incidente real detectado.			Desejável. Indica que o sistema funcionou como esperado.
+	Falso Positivo (FP)		Alerta incorreto: atividade benigna classificada como ameaça.	Custoso. Consome tempo de análise sem necessidade.
+	Verdadeiro Negativo (VN)	Silêncio correto: nenhum incidente ocorreu.			Ideal. Tráfego normal ignorado.
+	Falso Negativo (FN)		Silêncio perigoso: ameaça real não detectada.			Crítico. Permite ataques contínuos sem resposta.
+
+	- Exemplo Prático:
+		.VP: Snort detecta um ataque FTP com a regra content:"USER root".
+		.FP: Uma varredura legítima de rede dispara um alerta de "varredura de portas".
+		.FN: Um ataque zero-day não é detectado por falta de assinatura.
+	- Ações Recomendadas:
+		.Para FPs: Ajustar regras (ex: refinar content ou adicionar exceções).
+		.Para FNs: Atualizar assinaturas e monitorar ameaças emergentes.
+
+11.2.3 Análise Determinística vs. Probabilística:
+
+	Abordagem:	Princípio:									Aplicação em Segurança:
+	Determinística	Assume que todas as etapas de uma exploração são conhecidas e necessárias.	Útil para ataques com assinaturas claras (ex: exploits em portas padrão).
+	Probabilística	Calcula a chance de sucesso de cada etapa do ataque usando estatísticas.	Ideal para ataques dinâmicos (ex: portas aleatórias, técnicas de evasão).
+
+	- Exemplos:
+		.Determinístico:
+			Um exploit em porta 21 (FTP) é bloqueado por uma regra Snort específica.
+		.Probabilístico:
+			Um ataque de phishing pode ser previsto com base em padrões de tráfego HTTP suspeitos.
+	- Vantagens:
+		.Determinístico: Precisão alta em cenários conhecidos.
+		.Probabilístico: Adapta-se a ameaças novas ou variáveis.
+
+	- Ferramentas para Análise de Alertas
+		.Sguil:
+			Console central para triagem de alertas.
+			Integração: Conecta-se a Zeek (logs comportamentais) e Wireshark (análise de pacotes).
+		.Kibana:
+			Visualiza padrões de tráfego para identificar anomalias estatísticas.
+		.Zeek:
+			Gera logs detalhados de sessões (ex: HTTP, DNS) para detectar comportamentos incomuns.
+		.Wireshark:
+			Inspeciona conteúdo de pacotes para validar alertas (ex: verificar se USER root foi realmente enviado).
+
+11.2.4 Resumo de Melhores Práticas:
+
+	- Reduzir Falsos Positivos:
+		.Ajuste regras para evitar gatilhos benignos (ex: tráfego de sistemas internos).
+	- Minimizar Falsos Negativos:
+		.Atualize assinaturas regularmente (use PulledPork no Snort).
+	- Combine Abordagens:
+		.Use análise determinística para ameaças conhecidas e probabilística para comportamentos anômalos.
+	- Escalone Alertas Críticos:
+		.Priorize VPs com alto impacto (ex: tentativas de acesso administrativo
