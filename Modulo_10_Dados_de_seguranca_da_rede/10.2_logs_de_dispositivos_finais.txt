@@ -1,0 +1,64 @@
+10.2.1 Logs de Hosts:
+
+	- Definição: Sistemas de detecção de intrusão baseados em host (HIDS) operam em hosts individuais, detectando e prevenindo intrusões.
+	- Funcionalidades:
+		.Criam e armazenam logs localmente.
+		.Podem enviar logs para servidores centralizados de gerenciamento.
+	- Exemplos de HIDS:
+		.OSSEC: Solução de código aberto com coleta e análise robusta de logs.
+		.Tripwire: HIDS para Linux com funcionalidade escalável.
+	- Logs do Windows (Visualizador de Eventos):
+		.Tipos de logs:
+			Aplicativos: Eventos registrados por programas.
+			Sistema: Operações de drivers, processos e hardware.
+			Instalação: Informações sobre instalação de software.
+			Segurança: Tentativas de logon e acessos a arquivos.
+			Linha de Comando: Execução de comandos CLI (útil para detectar malware).
+		.LSASS (Local Security Authority Subsystem Service):
+			Gerencia logs de segurança.
+			Alvo comum de malware (verificar se está em System32).
+
+10.2.2 Syslog:
+
+	- Definição: Protocolo cliente/servidor para registro centralizado de eventos em dispositivos de rede (RFC 5424).
+
+	- Formato da Mensagem:
+		.PRI (Prioridade):
+			Calculado por: Prioridade = (Facilidade * 8) + Severidade.
+			Severidade:
+				0 (Emergência) a 7 (Depuração).
+		.HEADER:
+			Carimbo de data/hora (MMM DD HH:MM:SS).
+			Símbolos como . ou * indicam problemas com NTP.
+			Nome do host ou IP de origem.
+		.MSG: Corpo da mensagem (variável por fabricante).
+	- Transporte:
+		.UDP (porta 514) ou TCP (porta 5000) (dados em texto claro).
+
+10.2.3 Logs do Servidor:
+	
+	- Fontes Principais:
+		.Servidores Web:
+			Apache: Registra requisições HTTP (ex: GET /logo_sm.gif).
+			IIS (Microsoft): Logs de acesso com detalhes de IP, método e user-agent.
+		.Proxy DNS:
+			Monitora consultas DNS para detectar conexões maliciosas.
+	- Sistemas Suportados:
+		.Unix/Linux: Usam syslog.
+		.Outros: Podem usar formatos proprietários.
+
+10.2.4 SIEM e Coleta de Registros:
+
+	- Funções do SIEM:
+		.Coleta de Logs: Agrega eventos de múltiplas fontes.
+		.Normalização: Padroniza formatos diferentes.
+		.Correlação: Identifica relações entre eventos.
+		.Agregação: Remove duplicações.
+		.Relatórios: Gera dashboards em tempo real.
+		.Conformidade: Atende a regulamentações.
+	- Ferramentas:
+		.Splunk: Parceiro da Cisco com painéis interativos.
+		.Security Onion (ELK): Elasticsearch + Logstash + Kibana.
+	- Evolução para SOAR:
+		.Automação de respostas a incidentes.
+		.Plataformas integradas (ex: Cisco SecureX, Palo Alto Cortex XDR).

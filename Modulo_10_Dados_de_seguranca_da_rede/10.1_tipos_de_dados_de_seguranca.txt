@@ -1,0 +1,65 @@
+10.1.1 Dados de Alerta:
+
+	- O que são? Mensagens geradas por IDS/IPS (como Snort) quando detectam tráfego malicioso baseado em assinaturas ou anomalias.
+	- Exemplo Prático: Snort em Ação
+		.Regra Snort:
+			alert ip any any -> any any (msg:"GPL ATTACK_RESPONSE id check returned root"; content:"uid=0|28|root|29|"; classtype:bad-unknown; sid:2100498; rev:8;)
+		.Funcionamento: Gera alerta se um pacote contiver uid=0(root) (indicando acesso root).
+		.Teste: Acessar o site testmyids.com (que exibe uid=0(root)) para verificar se o Snort está operacional.
+	- Ferramentas Associadas:
+		.Sguil/Squert: Interfaces para visualizar e pesquisar alertas do Snort.
+
+10.1.2 Dados de Sessão e Transação:
+
+	- Dados de Sessão
+		.Registram metadados sobre comunicações entre hosts (ex: cliente-servidor).
+	- Campos Principais (Exemplo: Zeek/Bro):
+	
+	Campo:		Descrição:				Exemplo:
+	ts		Timestamp da sessão.			1320279567
+	uid		ID único da sessão.			CEV1Z545GT3PWJLog
+	id.orig_h	IP de origem.				192.168.2.76
+	id.resp_h	IP de destino.				174.129.249.33
+	proto		Protocolo (ex: TCP, UDP).		tcp
+	service		Protocolo de aplicação (ex: HTTP).	http
+	duration	Duração da sessão.			0.082899 (segundos)
+
+	- Dados de Transação
+		.Registram o conteúdo específico das interações (ex: requisições HTTP).
+	-Exemplo: Transação HTTP
+		.Requisição:
+			GET /home/index.html HTTP/1.1
+			Host: www.example.com
+			User-Agent: Firefox/53.0	
+		.Resposta:
+			HTTP/1.1 200 OK
+			Content-Type: text/html
+			<html>...</html>
+		.Log de Servidor:
+			192.168.1.10 – anyUser [10/Oct/2015:13:55:36 -0500] "GET /index.html HTTP/1.1" 200 326
+
+10.1.3 Capturas Completas de Pacotes:
+
+	- O que são? Registros detalhados de todos os pacotes trafegados na rede, incluindo conteúdo bruto (ex: e-mails, arquivos).
+	- Ferramentas:
+		.Wireshark: Analisa pacotes individualmente.
+		.Cisco Prime Infrastructure: Visualiza capturas em ambientes corporativos.
+	- Vantagens:
+		.Permite análise forense profunda (ex: extração de malware de tráfego HTTP).
+		.Desafio: Alto consumo de armazenamento.
+
+10.1.4 Dados Estatísticos:
+
+	- Objetivo: Identificar anomalias comparando tráfego atual com padrões históricos.
+	- Técnicas Avançadas:
+		.NBA (Network Behavior Analysis):
+			Analisa fluxos (NetFlow/IPFIX) para detectar desvios (ex: picos incomuns de tráfego).
+		.NBAD (Network Behavior Anomaly Detection):
+			Usa IA e aprendizado de máquina para prever ameaças baseadas em comportamento.
+	- Exemplo: Cisco Cognitive Threat Analytics
+		.Funcionamento:
+			Cria uma linha de base do tráfego normal.
+			Detecta:
+				Comunicação C2 (comando e controle).
+				Exfiltração de dados.
+				Aplicativos não autorizados.

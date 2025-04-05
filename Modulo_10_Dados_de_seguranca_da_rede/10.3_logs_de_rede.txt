@@ -1,0 +1,84 @@
+10.3.1 Tcpdump:
+
+	- Definição: Analisador de pacotes de linha de comando para captura em tempo real ou armazenamento em arquivo.
+	- Características:
+		.Base para ferramentas como Wireshark (GUI).
+		.Estrutura de captura varia conforme o protocolo e campos selecionados.
+
+10.3.2 NetFlow:
+
+	- Origem: Protocolo Cisco para monitoramento de tráfego baseado em fluxos (padronizado como IPFIX).
+	- Funcionamento:
+		.Atributos-chave de um fluxo:
+			IP origem/destino, porta origem/destino, protocolo (L3), classe de serviço, interface.
+		.Dados registrados: Timestamps de início/fim, contagem de pacotes/bytes.
+	- Ferramentas:
+		.nfdump: Utilitário de linha de comando para análise.
+		.FlowViewer: Interface gráfica para visualização.
+	- Aplicações em segurança:
+		.Linha do tempo de comprometimento, rastreamento de movimentos de invasores.
+
+10.3.3 Cisco Application Visibility and Control (AVC):
+
+	- Objetivo: Identificar e controlar +1000 aplicativos (ex: VoIP, P2P, cloud).
+	- Tecnologias:
+		.NBAR2: Classificação de aplicativos com base em assinaturas (L3-L7).
+		.Métricas coletadas: Largura de banda, latência, jitter, perda de pacotes.
+	- Integração:
+		.NetFlow v9/IPFIX para exportação de dados.
+		.Cisco Prime: Gerenciamento e relatórios.
+	- Controle: Priorização de tráfego (QoS) e bloqueio de aplicativos (ex: P2P).
+
+10.3.4 Logs de Filtro de Conteúdo:
+
+	- Dispositivos:
+		.Cisco ESA (Email Security Appliance):
+			Logs de antivírus, antispam, listas negras/brancas.
+		.Cisco WSA (Web Security Appliance):
+			Logs detalhados de tráfego HTTP (formato W3C).
+	- Métodos de envio: Syslog, FTP, SCP.
+
+10.3.5 Logs de Dispositivos Cisco:
+
+	- Formatos:
+		.Syslog: Prioridade calculada por (Facility * 8) + Severity.
+		.Exemplo:
+			*Mar19 11:22:07.289 EDT: %ASA-3-201008: Proibindo novas conexões.
+				ASA: Facility (20 = local4).
+				3: Severidade (Erro).
+	- Mnemônicos: Usados em dispositivos IOS (ex: %SYS-5-CONFIG_I).
+
+10.3.6 Logs de Proxy:
+
+	- Proxy Web (ex: Squid)
+	- Campos típicos:
+
+	Campo:		Exemplo:					Explicação:
+	Timestamp	1265939281.764					Unix epoch em milissegundos.
+	IP Cliente	172.16.167.228					Origem da requisição.
+	Método HTTP	GET						Ação solicitada.
+	URL		http://www.example.com/images/home.png		Recurso acessado.
+	Código HTTP	TCP_MISS/200					Status da resposta.
+
+	- Proxy DNS (Cisco Umbrella)
+	- Campos típicos:
+
+	Campo:		Exemplo:			Explicação:
+	Timestamp	2015-01-16 17:48:41		Data/hora em UTC.
+	Domínio		domain-visited.com.		Domínio consultado.
+	Categorias	Chat, Social Networking		Classificação de conteúdo.
+	Ação		Allowed				Permissão/bloqueio.
+
+	- Riscos: Proxies abertos podem mascarar IPs de atacantes.
+
+10.3.7 Firewalls de Última Geração (NGFW):
+
+	- Funcionalidades (Cisco Firepower):
+		.Prevenção de intrusões (NGIPS): Detecção de explorações.
+		.Controle de aplicativos: Filtragem por assinatura (ex: Skype, P2P).
+		.Proteção avançada (AMP): Sandboxing e análise de malware.
+		.Filtragem de URL: Baseada em reputação/categorias.
+	- Eventos comuns:
+		.Conexão: IPs origem/destino, regras acionadas.
+		.Intrusão: Tipo de exploração, contexto do ataque.
+		.Descoberta de rede: Mudanças na topologia.

@@ -1,0 +1,67 @@
+10.4.1 Tipos de Dados de Segurança:
+
+	- Dados de Alerta
+		.Gerados por IPS/IDS (ex: Snort no Security Onion).
+		.Indica violações de regras ou assinaturas de explorações conhecidas.
+		.Ferramentas de análise: Sguil, Squert, Kibana.
+	- Dados de Sessão
+		.Registros de comunicação entre cliente e servidor.
+		.Inclui 5-tuplas:
+			IP origem/destino, porta origem/destino, protocolo (ex: TCP/UDP).
+		.Exemplos: Duração da sessão, volume de dados transferidos.
+	- Capturas Completas de Pacotes
+		.Contêm o conteúdo real do tráfego (ex: e-mails, HTML, arquivos).
+		.Úteis para análise forense (ex: detecção de malware).
+		.Ferramentas: Tcpdump, Wireshark.
+	- Dados Estatísticos
+		.Análise de padrões de tráfego para detectar anomalias.
+		.Comparação com comportamentos "normais" para identificar desvios.
+
+10.4.2 Registros de Dispositivos Finais:
+
+	- HIDS (Host-based IDS)
+		.Exemplo: OSSEC (código aberto).
+		.Funções:
+			Detecção e prevenção de intrusões.
+			Envio de logs para servidores centralizados (ex: SIEM).
+	- Syslog
+		.Padrão para registro centralizado de eventos em dispositivos de rede.
+		.Componentes:
+			PRI (Prioridade = Facility × 8 + Severidade).
+			HEADER (timestamp, hostname).
+			MSG (corpo da mensagem).
+	- Logs de Servidores
+		.Servidores Web/Aplicação: Logs de acesso (ex: Apache, IIS).
+		.Proxy DNS: Identifica consultas maliciosas ou exfiltração de dados.
+
+	- SIEM (Security Information and Event Management)
+		.Funções:
+			Coleta, normalização e correlação de logs.
+			Exemplos: Splunk, ELK Stack (Security Onion).
+
+10.4.3 Logs de Rede:
+
+	- Tcpdump
+		.Analisador de pacotes via linha de comando.
+		.Captura tráfego em tempo real ou armazena em arquivo.
+		.Integrado ao Wireshark (GUI).
+	- NetFlow
+		.Protocolo para análise de fluxos de tráfego (baseado em sessões).
+		.Atributos-chave:
+			IPs origem/destino, portas, protocolo, interface.
+		.Ferramentas: nfdump, FlowViewer.
+		.Aplicações:
+			Detecção de anomalias, rastreamento de invasores.
+	- Cisco AVC (Application Visibility and Control)
+		.Identifica +1000 aplicativos (ex: VoIP, P2P) via NBAR2.
+		.Métricas: Largura de banda, latência, jitter.
+		.Controle: QoS e bloqueio de aplicativos.
+
+	- Resumo das Principais Ferramentas:
+
+	Categoria:			Ferramentas/Protocolos:		Uso:
+	Análise de Pacotes		Tcpdump, Wireshark		Captura e inspeção de tráfego.
+	Monitoramento de Fluxo		NetFlow, IPFIX			Metadados de sessões de rede.
+	HIDS				OSSEC, Tripwire			Detecção de intrusões em hosts.
+	SIEM				Splunk, ELK Stack		Correlação centralizada de logs.
+	Proxy				Squid, Cisco Umbrella		Filtragem de conteúdo DNS/Web.
