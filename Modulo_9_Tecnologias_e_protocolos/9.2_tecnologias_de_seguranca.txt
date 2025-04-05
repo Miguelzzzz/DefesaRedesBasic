@@ -1,0 +1,79 @@
+9.2.1 ACLs (Listas de Controle de Acesso):
+
+	- O que são?
+		.Regras que filtram tráfego com base em endereços IP, portas e protocolos.
+	- Limitações:
+		.Falsa sensação de segurança:
+			Ataques podem burlar ACLs usando spoofing de IP ou portas dinâmicas.
+			Exemplo: Tunelamento ICMP pode explorar regras permissivas (como permitir echo-reply).
+	.	.Incapazes de detectar ameaças avançadas:
+			Não analisam contexto ou comportamento do tráfego.
+	- Solução:
+		.Firewalls de próxima geração (NGFW):
+			Combinam ACLs com inspeção profunda de pacotes (DPI) e detecção baseada em comportamento.
+
+9.2.2 NAT e PAT:
+
+	- Impacto no Monitoramento:
+		.Ocultação de endereços internos:
+			Múltiplos dispositivos compartilham um IP público (PAT), dificultando rastreamento.
+		.Quebra de fluxos NetFlow:
+			Fluxos unidirecionais não correlacionam tráfego pré e pós-NAT.
+	- Solução:
+		.Cisco Stealthwatch:
+			"Costura" fluxos NetFlow mesmo com NAT/PAT.
+
+9.2.3 Criptografia, Túneis e VPNs:
+
+	- Desafios:
+		.HTTPS/VPNs:
+			Criptografia impede inspeção de tráfego malicioso (ex: malware em túneis SSL).
+		.Tunelamento malicioso:
+			Malware usa protocolos legítimos (DNS, ICMP) para exfiltrar dados.
+	- Solução:
+		.Inspeção SSL/TLS:
+			Firewalls com capacidade de descriptografar tráfego (ex: Cisco SSL Appliance).
+		.Monitoramento de anomalias:
+			Detecção de túneis DNS/ICMP incomuns.
+
+9.2.4 Redes P2P e Tor:
+
+	- Riscos do P2P:
+		.Compartilhamento de arquivos:
+			Vetor comum para malware (ex: BitTorrent).
+		.Desvio de firewalls:
+			Conexões dinâmicas dificultam bloqueio.
+	- Tor (Onion Routing):
+		.Anonimato extremo:
+			Usado por cibercriminosos na "Dark Web".
+			Malware usa Tor para comunicação C2 (evitando blacklists).
+		.Desafio para analistas:
+			Tráfego criptografado em múltiplos saltos, ocultando origem/destino.
+	- Soluções:
+		.Bloquear tráfego Tor em redes corporativas.
+		.Monitorar conexões anônimas para servidores Tor conhecidos.
+
+9.2.5 Balanceamento de Carga:
+
+	- Impacto na Segurança:
+		.DNS Load Balancing:
+			Um domínio pode retornar múltiplos IPs, confundindo análise forense.
+		.Testes de integridade:
+			Pacotes de "health check" podem ser confundidos com sondagem maliciosa.
+	- Solução:
+		.Documentar IPs de balanceadores para evitar falsos positivos.
+		.Integrar logs de balanceadores com ferramentas de SIEM.
+
+9.2.6 Conclusão:
+
+	- Principais Lições:
+		.ACLs são básicas:
+			Necessário complementar com NGFW e análise comportamental.
+		.NAT/PAT complicam rastreamento:
+			Ferramentas como Stealthwatch ajudam a correlacionar fluxos.
+		.Criptografia é um dilema:
+			Equilibrar privacidade e inspeção de tráfego.
+		.P2P/Tor são riscos:
+			Bloqueio proativo e monitoramento de tráfego anônimo.
+		.Balanceamento exige contexto:
+			Evitar falsos positivos em investigações.

@@ -1,0 +1,74 @@
+9.3.1 Monitoramento de Protocolos Comuns:
+
+	- Syslog e NTP
+		.Syslog:
+			Centraliza logs de dispositivos para monitoramento de segurança.
+			Ameaças: Ataques para adulterar/bloquear logs (ex: ocultar atividades maliciosas).
+			Solução: Usar syslog-ng para logs criptografados e integridade.
+		.NTP:
+			Sincroniza relógios para correlacionar eventos em investigações.
+			Ameaças:
+				Ataques DDoS explorando servidores NTP.
+				Manipulação de timestamps para dificultar análises forenses.
+	- DNS
+		.Ameaças:
+			Tunelamento DNS: Malware usa consultas DNS para exfiltrar dados (ex: subdomínios codificados em Base64).
+			C2 (Command and Control): Comunicação com servidores maliciosos.
+		.Solução:
+			Monitorar subdomínios anormalmente longos.
+			Usar ferramentas como Cisco Umbrella para bloquear domínios maliciosos.
+	- HTTP/HTTPS
+		.HTTP (Inseguro):
+			Injeção de iFrame: Código malicioso em páginas legítimas.
+		.HTTPS (Seguro):
+			Criptografia via SSL/TLS, mas dificulta a inspeção de tráfego.
+			Desafio: Balancear privacidade e segurança (ex: inspeção SSL em firewalls).
+	- E-mail (SMTP, POP3, IMAP)
+		.Riscos:
+			SMTP: Exfiltração de dados (ex: ataque à Sony Pictures).
+			POP3/IMAP: Entrega de malware via anexos.
+		.Solução:
+			Analisar anexos em sandboxes.
+			Monitorar tráfego SMTP incomum.
+	- ICMP
+		.Ameaças:
+			Tunelamento ICMP: Malware exfiltra dados em pacotes ICMP (ex: ferramenta Ping Tunnel).
+			Scanning de rede: Identificação de hosts e topologia.
+		.Solução:
+			Restringir tráfego ICMP não essencial.
+
+9.3.2 Tecnologias de Segurança e seus Desafios:
+
+	- ACLs (Listas de Controle de Acesso)
+		.Limitações:
+			Vulneráveis a spoofing de IP e portas dinâmicas.
+			Exemplo: Regras permissivas de ICMP podem permitir tunelamento malicioso.
+		.Solução:
+			Complementar com firewalls de próxima geração (NGFW).
+	- NAT/PAT
+		.Impacto:
+			Oculta endereços internos, dificultando rastreamento.
+			Quebra fluxos NetFlow (dados unidirecionais).
+		.Solução:
+			Usar ferramentas como Cisco Stealthwatch para correlacionar fluxos.
+	- Criptografia e VPNs
+		.Desafios:
+			Tráfego criptografado (HTTPS/VPNs) esconde malware.
+			Malware cria túneis criptografados para exfiltração.
+		.Solução:
+			Inspeção SSL/TLS em firewalls.
+	- Redes P2P e Tor
+		.P2P:
+			Riscos: Compartilhamento de malware (ex: BitTorrent).
+			Solução: Bloquear tráfego P2P em redes corporativas.
+		.Tor:
+			Dark Web: Anonimato para atividades criminosas.
+			Desafio: Tráfego criptografado em múltiplos saltos.
+			Solução:
+				Bloquear nós Tor conhecidos.
+	- Balanceamento de Carga
+		.Impacto:
+			Múltiplos IPs para um domínio confundem análises.
+			Pacotes de "health check" podem ser falsos positivos.
+		.Solução:
+			Documentar IPs de balanceadores.

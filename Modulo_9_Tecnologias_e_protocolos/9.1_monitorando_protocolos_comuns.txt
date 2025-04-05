@@ -1,0 +1,66 @@
+9.1.1 Syslog e NTP:
+	
+	- Syslog
+		.Função: Padrão para registro centralizado de logs de dispositivos de rede e endpoints.
+		.Porta: UDP 514.
+		.Importância:
+			Centraliza logs para monitoramento de segurança.
+			Ameaças:
+				Ataques para destruir ou adulterar logs (ex: ocultar atividades maliciosas).
+				Syslog-ng: Versão avançada com melhorias de segurança (ex: criptografia de logs).
+	- NTP (Network Time Protocol)
+		.Função: Sincroniza relógios de dispositivos na rede.
+		.Porta: UDP 123.
+		.Importância:
+			Correlação de eventos em logs (ex: investigação de incidentes).
+			Ameaças:
+				Ataques DDoS explorando vulnerabilidades em servidores NTP.
+				Manipulação de timestamps para dificultar a análise forense.
+
+9.1.2 DNS (Domain Name System):
+
+	- Ameaças Comuns
+		.Exfiltração de Dados via DNS:
+			Malware codifica dados roubados em subdomínios (ex: dados-roubados.example.com).
+			Exemplo: Uso de Base64 para camuflar dados em consultas DNS.
+		.Túneis DNS:
+			Canais ocultos para comunicação com servidores C2 (Command and Control).
+	- Soluções:
+		.Monitorar consultas DNS incomuns (ex: subdomínios extremamente longos).
+		.Ferramentas: Cisco Umbrella (bloqueia domínios maliciosos).
+
+9.1.3 HTTP e HTTPS:
+
+	- HTTP (Inseguro)
+		.Riscos:
+			Injeção de iFrame: Código malicioso em páginas legítimas carrega conteúdo de sites não confiáveis.
+			Dados em texto claro (interceptação fácil).
+	- HTTPS (Seguro)
+		.Criptografia via SSL/TLS (protege dados em trânsito).
+		.Desafios:
+			Monitoramento dificultado: Inspeção SSL requer descriptografia (ex: Cisco SSL Appliance).
+			Sobrecarga: Processo de handshake TLS adiciona latência.
+
+9.1.4 Protocolos de E-mail (SMTP, POP3, IMAP):
+
+	- Ameaças:
+
+	Protocolo:	Uso Legítimo:		Ameaças:
+	SMTP		Envio de e-mails.	Exfiltração de dados (ex: Sony Pictures).
+	POP3/IMAP	Download de e-mails.	Entrega de malware via anexos.
+
+	- Soluções:
+		.Monitorar anexos e tráfego SMTP incomum.
+		.Sandboxing: Analisar anexos em ambientes isolados.
+
+9.1.5 ICMP (Internet Control Message Protocol):
+
+	- Ameaças
+		.Tunelamento ICMP:
+			Malware usa pacotes ICMP para exfiltrar dados (ex: ferramenta Ping Tunnel).
+			Exemplo: Exploit LOKI encapsula dados em payloads ICMP.
+		.Scanning de Rede:
+			Identificação de hosts e topologia da rede (ex: ping sweeps).
+	- Soluções:
+		.Restringir tráfego ICMP em firewalls.
+		.Monitorar pacotes ICMP incomuns (tamanho, frequência).
